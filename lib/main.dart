@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
+import 'sorpresa.dart';
+import 'widgets.dart';
+import 'map_screen.dart';
 
 void main() {
   runApp(const CityLoreApp());
@@ -19,22 +22,6 @@ class CityLoreApp extends StatelessWidget {
     );
   }
 }
-
-// ── COLORES ──────────────────────────────────────────────────
-const kBg        = Color(0xFF0a0a0f);
-const kSurface   = Color(0xFF13131a);
-const kSurface2  = Color(0xFF1c1c28);
-const kBorder    = Color(0xFF2a2a3a);
-const kGold      = Color(0xFFc9a84c);
-const kGoldLight = Color(0xFFe8c97a);
-const kText      = Color(0xFFe8e4dc);
-const kMuted     = Color(0xFF7a7890);
-const kCapaColors = {
-  'historia':     Color(0xFF4a7fa5),
-  'arquitectura': Color(0xFF7a5fa5),
-  'arte':         Color(0xFFa55f7a),
-  'curiosidades': Color(0xFF5fa57a),
-};
 
 // ── MODELOS ──────────────────────────────────────────────────
 class City {
@@ -59,16 +46,6 @@ class Place {
 
   String nombre(String lang) =>
       (nombres[lang]?.isNotEmpty == true) ? nombres[lang]! : nombres['es'] ?? id;
-
-// Columnas v7 (31 cols):
-// 0:Ciudad 1:ID 2:Nombre_ES 3:Nombre_EN 4:Nombre_DE 5:Nombre_IT
-// 6:Barrio 7:Epoca 8:Lat 9:Lng
-// 10:Historia_ES 11:Historia_EN 12:Historia_DE 13:Historia_IT
-// 14:Arquitectura_ES 15:Arquitectura_EN 16:Arquitectura_DE 17:Arquitectura_IT
-// 18:Arte_ES 19:Arte_EN 20:Arte_DE 21:Arte_IT
-// 22:Curiosidades_ES 23:Curiosidades_EN 24:Curiosidades_DE 25:Curiosidades_IT
-// 26:Audio_ES 27:Audio_EN 28:Audio_DE 29:Audio_IT
-// 30:Wikipedia_EN
 }
 
 // ── GOOGLE SHEETS ─────────────────────────────────────────────
@@ -78,31 +55,23 @@ Future<List<Place>> fetchPlaces(String ciudad) async {
   final url = 'https://docs.google.com/spreadsheets/d/$kSheetId/gviz/tq?tqx=out:json&sheet=Lugares';
   final res = await http.get(Uri.parse(url));
   if (res.statusCode != 200) throw Exception('Error al cargar datos');
-
-  // Sheets devuelve JSON con prefijo: /*O_o*/\ngoogle.visualization.Query.setResponse({...})
-  // Hay que limpiar el prefijo antes de parsear
   String body = res.body;
   final start = body.indexOf('{');
   final end = body.lastIndexOf('}');
   if (start == -1 || end == -1) throw Exception('Formato inesperado');
   body = body.substring(start, end + 1);
-
   final data = json.decode(body);
   final rows = data['table']['rows'] as List;
   final places = <Place>[];
-
   for (final row in rows) {
     final cells = row['c'] as List;
-    // Extraer valor de cada celda (puede ser null)
     String cell(int i) {
       if (i >= cells.length || cells[i] == null) return '';
       final v = cells[i]['v'];
       if (v == null) return '';
       return v.toString().trim();
     }
-
     if (cells.isEmpty || cell(0).isEmpty) continue;
-
     try {
       final place = Place(
         ciudad: cell(0), id: cell(1),
@@ -132,23 +101,18 @@ Future<String?> fetchWikipediaPhoto(String articleName) async {
     final res = await http.get(Uri.parse(url));
     if (res.statusCode != 200) return null;
     final data = json.decode(res.body);
-    // Obtener URL original en alta resolución
     String? thumbUrl = data['originalimage']?['source'] as String?;
-    // Si no hay original, usar thumbnail pero en mayor tamaño
     thumbUrl ??= (data['thumbnail']?['source'] as String?)
         ?.replaceAll(RegExp(r'/\d+px-'), '/800px-');
     return thumbUrl;
   } catch (_) { return null; }
 }
 
-
-
 // ── TRADUCCIONES UI ───────────────────────────────────────────
 const kT = {
   'es': {
     'choose_city':   'Elige tu destino',
     'surprise':      '✨  Modo Sorpréndeme',
-    'surprise_soon': 'Modo Sorpréndeme — próximamente',
     'soon':          'Pronto',
     'search':        'Buscar lugar...',
     'place':         'Lugar',
@@ -158,11 +122,11 @@ const kT = {
     'retry':         'Reintentar',
     'no_results':    'No se encontraron lugares',
     'no_text':       'Texto no disponible en este idioma.',
+    'see_map':       'Ver mapa',
   },
   'en': {
     'choose_city':   'Choose your destination',
     'surprise':      '✨  Surprise Me',
-    'surprise_soon': 'Surprise Me — coming soon',
     'soon':          'Soon',
     'search':        'Search place...',
     'place':         'Place',
@@ -172,11 +136,11 @@ const kT = {
     'retry':         'Retry',
     'no_results':    'No places found',
     'no_text':       'Text not available in this language.',
+    'see_map':       'View map',
   },
   'de': {
     'choose_city':   'Wähle dein Ziel',
     'surprise':      '✨  Überrasch mich',
-    'surprise_soon': 'Überrasch mich — demnächst',
     'soon':          'Bald',
     'search':        'Ort suchen...',
     'place':         'Ort',
@@ -186,11 +150,11 @@ const kT = {
     'retry':         'Erneut versuchen',
     'no_results':    'Keine Orte gefunden',
     'no_text':       'Text in dieser Sprache nicht verfügbar.',
+    'see_map':       'Karte anzeigen',
   },
   'it': {
     'choose_city':   'Scegli la tua destinazione',
     'surprise':      '✨  Sorprendimi',
-    'surprise_soon': 'Sorprendimi — prossimamente',
     'soon':          'Presto',
     'search':        'Cerca luogo...',
     'place':         'Luogo',
@@ -200,6 +164,7 @@ const kT = {
     'retry':         'Riprova',
     'no_results':    'Nessun luogo trovato',
     'no_text':       'Testo non disponibile in questa lingua.',
+    'see_map':       'Vedi mappa',
   },
 };
 
@@ -224,25 +189,6 @@ String _fmtTime(Duration d) {
   final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
   final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
   return '$m:$s';
-}
-
-Widget langPill(String current, void Function(String) onSelect) {
-  return Container(
-    padding: const EdgeInsets.all(3),
-    decoration: BoxDecoration(color: kSurface2, borderRadius: BorderRadius.circular(20), border: Border.all(color: kBorder)),
-    child: Row(children: ['es','en','de','it'].map((l) {
-      final active = current == l;
-      return GestureDetector(
-        onTap: () => onSelect(l),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          decoration: BoxDecoration(color: active ? kGold : Colors.transparent, borderRadius: BorderRadius.circular(16)),
-          child: Text(l.toUpperCase(), style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: active ? Colors.black : kMuted)),
-        ),
-      );
-    }).toList()),
-  );
 }
 
 // ── SPLASH ────────────────────────────────────────────────────
@@ -309,7 +255,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
             child: GestureDetector(
-              onTap: () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(t(_lang, 'surprise_soon')))),
+              onTap: () => Navigator.push(context, MaterialPageRoute(
+                  builder: (_) => SorpresaScreen(lang: _lang))),
               child: Container(
                 width: double.infinity, padding: const EdgeInsets.symmetric(vertical: 14),
                 decoration: BoxDecoration(color: kGold.withOpacity(0.08), borderRadius: BorderRadius.circular(14), border: Border.all(color: kGold)),
@@ -391,10 +338,42 @@ class _PlacesScreenState extends State<PlacesScreen> {
         p.barrio.toLowerCase().contains(q.toLowerCase())).toList();
   });
 
+  void _openMap() {
+    final mapPlaces = _all.asMap().entries.map((e) => MapPlace(
+      id: e.value.id,
+      nombre: e.value.nombre(_lang),
+      barrio: e.value.barrio,
+      lat: e.value.lat,
+      lng: e.value.lng,
+      numero: e.key + 1,
+    )).toList();
+
+    Navigator.push(context, MaterialPageRoute(
+      builder: (_) => MapScreen(
+        lang: _lang,
+        places: mapPlaces,
+        onPlaceTap: (mapPlace) {
+          // Buscar el Place original por id
+          final place = _all.firstWhere((p) => p.id == mapPlace.id);
+          Navigator.push(context, MaterialPageRoute(
+            builder: (_) => PlayerScreen(place: place, lang: _lang),
+          ));
+        },
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBg,
+      floatingActionButton: _all.isEmpty ? null : FloatingActionButton.extended(
+        onPressed: _openMap,
+        backgroundColor: kGold,
+        icon: const Icon(Icons.map_outlined, color: Colors.black),
+        label: Text(t(_lang, 'see_map'),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600)),
+      ),
       body: SafeArea(child: Column(children: [
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), color: kSurface,
@@ -439,7 +418,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
             : _filtered.isEmpty
             ? Center(child: Text(t(_lang, 'no_results'), style: const TextStyle(color: kMuted)))
             : ListView.builder(
-          padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 80),
           itemCount: _filtered.length,
           itemBuilder: (ctx, i) => _PlaceItem(place: _filtered[i], lang: _lang),
         )),
@@ -531,7 +510,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
   Future<void> _loadAudio() async {
     final baseUrl = widget.place.audios[_lang] ?? '';
     if (baseUrl.isEmpty) return;
-    // Construir URL correcta reemplazando la capa
     final url = baseUrl.replaceAll('_historia.mp3', '_$_capa.mp3');
     try {
       await _player.stop();
@@ -540,19 +518,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
     } catch (_) {}
   }
 
-  void _selectCapa(String capa) {
-    setState(() => _capa = capa);
-    _loadAudio();
-  }
-
-  void _selectLang(String lang) {
-    setState(() => _lang = lang);
-    _loadAudio();
-  }
-
+  void _selectCapa(String capa) { setState(() => _capa = capa); _loadAudio(); }
+  void _selectLang(String lang) { setState(() => _lang = lang); _loadAudio(); }
   Future<void> _togglePlay() async {
-    if (_playing) { await _player.pause(); }
-    else { await _player.play(); }
+    if (_playing) { await _player.pause(); } else { await _player.play(); }
   }
 
   Color get _capaColor => kCapaColors[_capa] ?? kGold;
@@ -561,14 +530,11 @@ class _PlayerScreenState extends State<PlayerScreen> {
   Widget build(BuildContext context) {
     final texto = widget.place.textos[_lang]?[_capa] ?? '';
     final progress = _dur.inMilliseconds > 0
-        ? (_pos.inMilliseconds / _dur.inMilliseconds).clamp(0.0, 1.0)
-        : 0.0;
+        ? (_pos.inMilliseconds / _dur.inMilliseconds).clamp(0.0, 1.0) : 0.0;
 
     return Scaffold(
       backgroundColor: kBg,
       body: SafeArea(child: Column(children: [
-
-        // ── TOP BAR ──
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), color: kSurface,
           child: Row(children: [
@@ -585,14 +551,9 @@ class _PlayerScreenState extends State<PlayerScreen> {
             langPill(_lang, _selectLang),
           ]),
         ),
-
         Expanded(child: SingleChildScrollView(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
-            // ── FOTO HISTÓRICA ──
             _buildPhoto(),
-
-            // ── HERO INFO ──
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -606,8 +567,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     style: const TextStyle(fontSize: 12, color: kMuted)),
               ]),
             ),
-
-            // ── CAPA TABS ──
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
@@ -631,14 +590,11 @@ class _PlayerScreenState extends State<PlayerScreen> {
                 );
               }).toList()),
             ),
-
-            // ── REPRODUCTOR ──
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(color: kSurface, borderRadius: BorderRadius.circular(16), border: Border.all(color: kBorder)),
               child: Column(children: [
-                // Label + indicador
                 Row(children: [
                   Container(width: 8, height: 8, decoration: BoxDecoration(color: _capaColor, shape: BoxShape.circle)),
                   const SizedBox(width: 8),
@@ -650,7 +606,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   ]),
                 ]),
                 const SizedBox(height: 14),
-                // Controles
                 Row(children: [
                   GestureDetector(
                       onTap: _togglePlay,
@@ -661,12 +616,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   const SizedBox(width: 14),
                   Expanded(child: Column(children: [
                     SliderTheme(
-                      data: SliderThemeData(
-                        trackHeight: 4,
-                        activeTrackColor: _capaColor,
-                        inactiveTrackColor: kSurface2,
-                        thumbColor: _capaColor,
-                      ),
+                      data: SliderThemeData(trackHeight: 4, activeTrackColor: _capaColor,
+                          inactiveTrackColor: kSurface2, thumbColor: _capaColor),
                       child: Slider(value: progress, onChanged: (v) {
                         if (_dur == Duration.zero) return;
                         _player.seek(Duration(milliseconds: (_dur.inMilliseconds * v).round()));
@@ -680,8 +631,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
                 ]),
               ]),
             ),
-
-            // ── TEXTO ──
             Container(
               margin: const EdgeInsets.fromLTRB(16, 12, 16, 24),
               padding: const EdgeInsets.all(16),
@@ -699,7 +648,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     : Text(texto, style: const TextStyle(fontSize: 14, color: Color(0xFFc8c4bc), height: 1.8)),
               ]),
             ),
-
           ]),
         )),
       ])),
@@ -708,39 +656,26 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
   Widget _buildPhoto() {
     if (_loadingPhoto) {
-      return Container(
-        height: 200, color: kSurface2,
-        child: const Center(child: CircularProgressIndicator(color: kGold, strokeWidth: 2)),
-      );
+      return Container(height: 200, color: kSurface2,
+          child: const Center(child: CircularProgressIndicator(color: kGold, strokeWidth: 2)));
     }
     if (_photoUrl == null) {
-      return Container(
-        height: 160, color: kSurface2,
-        child: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Icon(Icons.image_not_supported_outlined, color: kMuted, size: 32),
-          const SizedBox(height: 8),
-          Text(t(_lang, 'no_photo'), style: const TextStyle(color: kMuted, fontSize: 12)),
-        ])),
-      );
+      return Container(height: 160, color: kSurface2,
+          child: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const Icon(Icons.image_not_supported_outlined, color: kMuted, size: 32),
+            const SizedBox(height: 8),
+            Text(t(_lang, 'no_photo'), style: const TextStyle(color: kMuted, fontSize: 12)),
+          ])));
     }
     return Stack(children: [
-      Image.network(
-        _photoUrl!,
-        width: double.infinity, height: 220,
-        fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => Container(
-            height: 160, color: kSurface2,
-            child: const Center(child: Icon(Icons.image_not_supported_outlined, color: kMuted, size: 32))),
-      ),
-      // Gradiente sobre la foto
+      Image.network(_photoUrl!, width: double.infinity, height: 220, fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => Container(height: 160, color: kSurface2,
+              child: const Center(child: Icon(Icons.image_not_supported_outlined, color: kMuted, size: 32)))),
       Positioned(bottom: 0, left: 0, right: 0,
-          child: Container(
-            height: 60,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, kBg.withOpacity(0.8)])),
-          )),
-      // Badge "Foto histórica"
+          child: Container(height: 60,
+              decoration: BoxDecoration(gradient: LinearGradient(
+                  begin: Alignment.topCenter, end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, kBg.withOpacity(0.8)])))),
       Positioned(top: 12, right: 12,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
