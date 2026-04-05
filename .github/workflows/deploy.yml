@@ -26,6 +26,10 @@ jobs:
       - name: Build web
         run: flutter build web --base-href /citylore-app/
 
+      - name: Disable service worker
+        run: |
+          sed -i 's/_flutter.loader.load({.*})/_flutter.loader.load({})/g' build/web/flutter_bootstrap.js
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
