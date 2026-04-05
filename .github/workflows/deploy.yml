@@ -26,17 +26,9 @@ jobs:
       - name: Build web
         run: flutter build web --base-href /citylore-app/
 
-      - name: Disable service worker
+      - name: Unregister service worker
         run: |
-          python3 -c "
-          import re
-          with open('build/web/flutter_bootstrap.js', 'r') as f:
-              content = f.read()
-          content = re.sub(r'_flutter\.loader\.load\(\{[^}]*serviceWorkerSettings[^}]*\}[^)]*\)', '_flutter.loader.load({})', content)
-          with open('build/web/flutter_bootstrap.js', 'w') as f:
-              f.write(content)
-          print('Done')
-          "
+          sed -i 's|</body>|<script>if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(r=>{for(let s of r)s.unregister();});}</script></body>|' build/web/index.html
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
