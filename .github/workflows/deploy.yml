@@ -33,16 +33,3 @@ jobs:
           publish_dir: ./build/web
           publish_branch: gh-pages
           force_orphan: true
-```
-
----
-
-**Pasos para activarlo:**
-
-1. En tu repo local, crea la carpeta `.github/workflows/` si no existe
-2. Dentro crea el archivo `deploy.yml` con el contenido de arriba
-3. Haz commit y push a master:
-```
-   git add .github/workflows/deploy.yml
-   git commit -m "Add GitHub Actions deploy workflow"
-   git push origin master
