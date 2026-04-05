@@ -109,14 +109,14 @@ String ts(String lang, String key) =>
 class SorpresaStop {
   final String id, branch, lugar;
   final double lat, lng;
-  final Map<String, String> hints;
 
   const SorpresaStop({
-    required this.id, required this.branch, required this.lugar,
-    required this.lat, required this.lng, required this.hints,
+    required this.id,
+    required this.branch,
+    required this.lugar,
+    required this.lat,
+    required this.lng,
   });
-
-  String hint(String lang) => hints[lang] ?? hints['es'] ?? '';
 }
 
 class SorpresaPersonaje {
@@ -124,45 +124,41 @@ class SorpresaPersonaje {
   final List<SorpresaStop> stops;
 
   const SorpresaPersonaje({
-    required this.id, required this.name, required this.emoji,
-    required this.desc, required this.r2Base, required this.stops,
+    required this.id,
+    required this.name,
+    required this.emoji,
+    required this.desc,
+    required this.r2Base,
+    required this.stops,
   });
 }
 
-// ── DATOS LENA HOFFMANN ──────────────────────────────────────
+// ── DATOS LENA HOFFMANN (v2 — xlsx v9) ───────────────────────
+// Ruta: 6 paradas shared → bifurcación → 3 paradas A o B
+// Rama A: Memorial del Holocausto → Puerta de Brandenburgo → Columna de la Victoria
+// Rama B: Lustgarten → Neues Museum (Nefertiti) → Pergamon Panorama
 const kLena = SorpresaPersonaje(
-  id: 'lena', name: 'Lena Hoffmann', emoji: '💃',
+  id: 'lena',
+  name: 'Lena Hoffmann',
+  emoji: '💃',
   desc: 'La bailarina del cabaret · Berlín 1925–1933',
-  r2Base: 'https://pub-b20ae9c7d6c140aa868ea5aba6210b5f.r2.dev/audios/sorpresa/berlin/lena/',
+  r2Base: 'https://pub-b20ae9c7d6c140aa868ea5aba6210b5f.r2.dev/audios/sorpresa/berlin/lena/v2/',
   stops: [
-    SorpresaStop(id:'lena_01', branch:'shared', lugar:'Introducción', lat:52.5200, lng:13.3880,
-        hints:{'es':'Berlín, 1925. Escucha antes de comenzar a caminar.','en':'Berlin, 1925. Listen before you start walking.','de':'Berlin, 1925. Höre zu, bevor du anfängst zu laufen.','it':'Berlino, 1925. Ascolta prima di iniziare a camminare.'}),
-    SorpresaStop(id:'lena_02', branch:'shared', lugar:'Friedrichstrasse', lat:52.5208, lng:13.3880,
-        hints:{'es':'Empieza donde Berlín se vistió de gala por última vez.','en':'Start where Berlin last dressed up.','de':'Beginne dort, wo Berlin sich zum letzten Mal in Schale geworfen hat.','it':'Inizia dove Berlino si è vestita a festa per l\'ultima volta.'}),
-    SorpresaStop(id:'lena_03', branch:'shared', lugar:'Gendarmenmarkt', lat:52.5135, lng:13.3927,
-        hints:{'es':'Busca la plaza donde la eternidad se parece a un domingo.','en':'Find the square where eternity feels like a Sunday.','de':'Suche den Platz, wo die Ewigkeit sich wie ein Sonntag anfühlt.','it':'Trova la piazza dove l\'eternità sembra una domenica.'}),
-    SorpresaStop(id:'lena_04', branch:'shared', lugar:'Hackesche Höfe', lat:52.5231, lng:13.4019,
-        hints:{'es':'Entra al lugar donde un cerezo florece sin que nadie lo recuerde.','en':'Enter the place where a cherry tree blooms without anyone remembering it.','de':'Betritt den Ort, wo ein Kirschbaum blüht, ohne dass es jemand erinnert.','it':'Entra nel luogo dove un ciliegio fiorisce senza che nessuno lo ricordi.'}),
-    SorpresaStop(id:'lena_05', branch:'shared', lugar:'Bebelplatz', lat:52.5138, lng:13.3939,
-        hints:{'es':'Camina hasta la plaza donde los libros ardieron.','en':'Walk to the square where books burned.','de':'Geh zum Platz, wo die Bücher brannten.','it':'Cammina fino alla piazza dove bruciarono i libri.'}),
-    SorpresaStop(id:'lena_05_bif', branch:'bifurcacion', lugar:'Puerta de Brandenburgo', lat:52.5163, lng:13.3777,
-        hints:{'es':'Aquí la historia se divide. ¿Quién es tu Lena?','en':'Here the story divides. Who is your Lena?','de':'Hier teilt sich die Geschichte. Wer ist deine Lena?','it':'Qui la storia si divide. Chi è la tua Lena?'}),
-    SorpresaStop(id:'lena_06', branch:'A', lugar:'Puerta de Brandenburgo', lat:52.5163, lng:13.3777,
-        hints:{'es':'Ve a la Puerta. Mira la Cuadriga.','en':'Go to the Gate. Look at the Quadriga.','de':'Geh zum Tor. Schau dir die Quadriga an.','it':'Vai alla Porta. Guarda la Quadriga.'}),
-    SorpresaStop(id:'lena_08', branch:'A', lugar:'Tiergarten', lat:52.5145, lng:13.3500,
-        hints:{'es':'Entra al parque y siéntate bajo los árboles nuevos.','en':'Enter the park and sit under the new trees.','de':'Betritt den Park und setz dich unter die neuen Bäume.','it':'Entra nel parco e siediti sotto i nuovi alberi.'}),
-    SorpresaStop(id:'lena_10', branch:'A', lugar:'Neue Wache', lat:52.5175, lng:13.3935,
-        hints:{'es':'Busca el memorial donde llueve sobre el bronce.','en':'Find the memorial where rain falls on bronze.','de':'Finde das Mahnmal, wo Regen auf Bronze fällt.','it':'Trova il memoriale dove piove sul bronzo.'}),
-    SorpresaStop(id:'lena_12', branch:'A', lugar:'Isla de los Museos', lat:52.5196, lng:13.3986,
-        hints:{'es':'Siéntate frente a quien ha sobrevivido tres mil años.','en':'Sit before one who has survived three thousand years.','de':'Setz dich vor jemanden, der dreitausend Jahre überlebt hat.','it':'Siediti di fronte a chi ha sopravvissuto tremila anni.'}),
-    SorpresaStop(id:'lena_07', branch:'B', lugar:'Puerta de Brandenburgo', lat:52.5163, lng:13.3777,
-        hints:{'es':'Ve a la Puerta. Quédate sola un momento.','en':'Go to the Gate. Stay alone for a moment.','de':'Geh zum Tor. Bleib einen Moment allein.','it':'Vai alla Porta. Resta sola un momento.'}),
-    SorpresaStop(id:'lena_09', branch:'B', lugar:'Tiergarten', lat:52.5145, lng:13.3500,
-        hints:{'es':'Entra al parque. Recuerda los árboles viejos.','en':'Enter the park. Remember the old trees.','de':'Betritt den Park. Erinnere dich an die alten Bäume.','it':'Entra nel parco. Ricorda i vecchi alberi.'}),
-    SorpresaStop(id:'lena_11', branch:'B', lugar:'Neue Wache', lat:52.5175, lng:13.3935,
-        hints:{'es':'Busca el memorial donde llueve sobre el bronce.','en':'Find the memorial where rain falls on bronze.','de':'Finde das Mahnmal, wo Regen auf Bronze fällt.','it':'Trova il memoriale dove piove sul bronzo.'}),
-    SorpresaStop(id:'lena_13', branch:'B', lugar:'Isla de los Museos', lat:52.5196, lng:13.3986,
-        hints:{'es':'Siéntate frente a quien ha sobrevivido tres mil años.','en':'Sit before one who has survived three thousand years.','de':'Setz dich vor jemanden, der dreitausend Jahre überlebt hat.','it':'Siediti di fronte a chi ha sopravvissuto tremila anni.'}),
+    // ── SHARED (paradas 1–6) ──────────────────────────────
+    SorpresaStop(id: 'lena_01', branch: 'shared', lugar: 'Nueva Sinagoga',       lat: 52.5249, lng: 13.3942),
+    SorpresaStop(id: 'lena_02', branch: 'shared', lugar: 'Monbijoupark',         lat: 52.5231, lng: 13.3963),
+    SorpresaStop(id: 'lena_03', branch: 'shared', lugar: 'Bode Museum',          lat: 52.5219, lng: 13.3944),
+    SorpresaStop(id: 'lena_04', branch: 'shared', lugar: 'Berliner Dom',         lat: 52.5190, lng: 13.4011),
+    SorpresaStop(id: 'lena_05', branch: 'shared', lugar: 'Staatsoper / Bebelplatz', lat: 52.5171, lng: 13.3947),
+    SorpresaStop(id: 'lena_06', branch: 'shared', lugar: 'Neue Wache',           lat: 52.5179, lng: 13.3955),
+    // ── RAMA A ───────────────────────────────────────────
+    SorpresaStop(id: 'lena_07a', branch: 'A', lugar: 'Memorial del Holocausto', lat: 52.5139, lng: 13.3787),
+    SorpresaStop(id: 'lena_08a', branch: 'A', lugar: 'Puerta de Brandenburgo',  lat: 52.5163, lng: 13.3777),
+    SorpresaStop(id: 'lena_09a', branch: 'A', lugar: 'Columna de la Victoria',  lat: 52.5145, lng: 13.3501),
+    // ── RAMA B ───────────────────────────────────────────
+    SorpresaStop(id: 'lena_07b', branch: 'B', lugar: 'Lustgarten',              lat: 52.5187, lng: 13.3992),
+    SorpresaStop(id: 'lena_08b', branch: 'B', lugar: 'Neues Museum (Nefertiti)', lat: 52.5201, lng: 13.3976),
+    SorpresaStop(id: 'lena_09b', branch: 'B', lugar: 'Pergamon Panorama',       lat: 52.5209, lng: 13.3940),
   ],
 );
 
@@ -180,7 +176,8 @@ double _haversine(double lat1, double lng1, double lat2, double lng2) {
   final a = (dLat / 2) * (dLat / 2) +
       (lat1 * 3.14159265358979 / 180).abs() *
           (lat2 * 3.14159265358979 / 180).abs() *
-          (dLng / 2) * (dLng / 2);
+          (dLng / 2) *
+          (dLng / 2);
   return R * 2 * (a < 1 ? a : 1);
 }
 
@@ -188,7 +185,8 @@ double _haversine(double lat1, double lng1, double lat2, double lng2) {
 class SorpresaScreen extends StatefulWidget {
   final String lang;
   const SorpresaScreen({super.key, required this.lang});
-  @override State<SorpresaScreen> createState() => _SorpresaScreenState();
+  @override
+  State<SorpresaScreen> createState() => _SorpresaScreenState();
 }
 
 class _SorpresaScreenState extends State<SorpresaScreen> {
@@ -196,7 +194,10 @@ class _SorpresaScreenState extends State<SorpresaScreen> {
   bool _selected = false;
 
   @override
-  void initState() { super.initState(); _lang = widget.lang; }
+  void initState() {
+    super.initState();
+    _lang = widget.lang;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -204,12 +205,18 @@ class _SorpresaScreenState extends State<SorpresaScreen> {
       backgroundColor: kBg,
       body: SafeArea(child: Column(children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), color: kSurface,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          color: kSurface,
           child: Row(children: [
-            GestureDetector(onTap: () => Navigator.pop(context),
-                child: Container(width: 36, height: 36,
-                    decoration: BoxDecoration(border: Border.all(color: kBorder), borderRadius: BorderRadius.circular(10)),
-                    child: const Icon(Icons.arrow_back, color: kText, size: 18))),
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                  width: 36, height: 36,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: kBorder),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: const Icon(Icons.arrow_back, color: kText, size: 18)),
+            ),
             const SizedBox(width: 12),
             Expanded(child: Text(ts(_lang, 'title'),
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: kText))),
@@ -236,7 +243,9 @@ class _SorpresaScreenState extends State<SorpresaScreen> {
                 decoration: BoxDecoration(
                     color: _selected ? kGold.withOpacity(0.1) : kSurface,
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: _selected ? kGold : kBorder, width: _selected ? 1.5 : 0.5)),
+                    border: Border.all(
+                        color: _selected ? kGold : kBorder,
+                        width: _selected ? 1.5 : 0.5)),
                 child: Row(children: [
                   const Text('💃', style: TextStyle(fontSize: 28)),
                   const SizedBox(width: 14),
@@ -257,18 +266,25 @@ class _SorpresaScreenState extends State<SorpresaScreen> {
             _comingSoonCard('🕵️', 'Klaus Brenner', 'Berlín 1975'),
             const SizedBox(height: 32),
             GestureDetector(
-              onTap: _selected ? () => Navigator.push(context, MaterialPageRoute(
-                  builder: (_) => SorpresaPlayerScreen(personaje: kLena, lang: _lang))) : null,
+              onTap: _selected
+                  ? () => Navigator.push(context, MaterialPageRoute(
+                  builder: (_) => SorpresaPlayerScreen(personaje: kLena, lang: _lang)))
+                  : null,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
-                width: double.infinity, padding: const EdgeInsets.symmetric(vertical: 16),
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 decoration: BoxDecoration(
-                    gradient: _selected ? const LinearGradient(colors: [kGold, kGoldLight]) : null,
+                    gradient: _selected
+                        ? const LinearGradient(colors: [kGold, kGoldLight])
+                        : null,
                     color: _selected ? null : kSurface2,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: _selected ? kGold : kBorder)),
                 child: Center(child: Text(ts(_lang, 'start'),
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                         color: _selected ? Colors.black : kMuted))),
               ),
             ),
@@ -306,13 +322,22 @@ class SorpresaPlayerScreen extends StatefulWidget {
   final SorpresaPersonaje personaje;
   final String lang;
   const SorpresaPlayerScreen({super.key, required this.personaje, required this.lang});
-  @override State<SorpresaPlayerScreen> createState() => _SorpresaPlayerScreenState();
+  @override
+  State<SorpresaPlayerScreen> createState() => _SorpresaPlayerScreenState();
 }
 
 class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
   late String _lang;
+
+  // Ruta activa: starts con solo las 6 shared; se expande al elegir rama
   late List<SorpresaStop> _route;
   int _idx = 0;
+
+  // true cuando el usuario ya eligió rama (para no mostrar bifurcación de nuevo)
+  String? _chosenBranch;
+
+  // true cuando estamos en el momento de bifurcación (justo después de parada 6)
+  bool get _atBifurcation => _chosenBranch == null && _idx == _route.length - 1;
 
   late AudioPlayer _player;
   bool _playing = false;
@@ -329,7 +354,9 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
   void initState() {
     super.initState();
     _lang = widget.lang;
-    _buildRoute(null);
+    // Empezamos solo con las paradas shared
+    _route = widget.personaje.stops.where((s) => s.branch == 'shared').toList();
+
     _player = AudioPlayer();
     _player.positionStream.listen((p) { if (mounted) setState(() => _pos = p); });
     _player.durationStream.listen((d) { if (mounted) setState(() => _dur = d ?? Duration.zero); });
@@ -337,7 +364,8 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
       if (mounted) setState(() => _playing = s.playing);
       if (s.processingState == ProcessingState.completed) {
         if (mounted) setState(() { _playing = false; _pos = Duration.zero; });
-        _player.seek(Duration.zero); _player.pause();
+        _player.seek(Duration.zero);
+        _player.pause();
       }
     });
     _loadAudio();
@@ -345,39 +373,41 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
   }
 
   @override
-  void dispose() { _player.dispose(); _geoSub?.cancel(); super.dispose(); }
-
-  void _buildRoute(String? branch) {
-    final all = widget.personaje.stops;
-    _route = branch == null
-        ? all.where((s) => s.branch == 'shared' || s.branch == 'bifurcacion').toList()
-        : all.where((s) => s.branch == 'shared' || s.branch == branch).toList();
+  void dispose() {
+    _player.dispose();
+    _geoSub?.cancel();
+    super.dispose();
   }
 
   SorpresaStop get _currentStop => _route[_idx];
 
+  // Construye la URL del audio según el id de la parada y el idioma
+  String _audioUrl(SorpresaStop stop) {
+    final langSuffix = (_lang == 'en') ? 'en' : 'es';
+    return '${widget.personaje.r2Base}${stop.id}_$langSuffix.mp3';
+  }
+
   Future<void> _loadAudio() async {
     final stop = _currentStop;
-    if (stop.branch == 'bifurcacion') return;
-    final langSuffix = (_lang == 'en') ? 'en' : 'es';
-    final url = '${widget.personaje.r2Base}${stop.id}_$langSuffix.mp3';
     try {
       await _player.stop();
       setState(() { _pos = Duration.zero; _dur = Duration.zero; _playing = false; });
-      await _player.setUrl(url);
+      await _player.setUrl(_audioUrl(stop));
     } catch (_) {}
   }
 
   Future<void> _togglePlay() async {
-    if (_currentStop.branch == 'bifurcacion') return;
     if (_playing) await _player.pause(); else await _player.play();
   }
 
+  // El usuario elige rama A o B: añadimos esas paradas a la ruta
   void _chooseBranch(String branch) {
+    final branchStops = widget.personaje.stops.where((s) => s.branch == branch).toList();
     setState(() {
-      _buildRoute(branch);
-      _idx = _route.indexWhere((s) => s.branch == branch);
-      if (_idx < 0) _idx = 0;
+      _chosenBranch = branch;
+      _route = [..._route, ...branchStops];
+      _idx++; // avanzamos a la primera parada de la rama elegida
+      _nearStop = false;
     });
     _loadAudio();
     _centerMap();
@@ -403,7 +433,8 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
       if (perm == LocationPermission.denied) perm = await Geolocator.requestPermission();
       if (perm == LocationPermission.deniedForever) return;
       _geoSub = Geolocator.getPositionStream(
-        locationSettings: const LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 5),
+        locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.high, distanceFilter: 5),
       ).listen((pos) {
         setState(() { _userLat = pos.latitude; _userLng = pos.longitude; });
         _checkProximity();
@@ -412,14 +443,13 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
   }
 
   void _checkProximity() {
-    if (_userLat == null || _userLng == null) return;
+    if (_userLat == null || _userLng == null || _atBifurcation) return;
     final stop = _currentStop;
-    if (stop.branch == 'bifurcacion') return;
     final dist = _haversine(_userLat!, _userLng!, stop.lat, stop.lng);
     if (dist <= _proximityRadius && !_nearStop) setState(() => _nearStop = true);
   }
 
-  // ── MAPA SORPRESA ─────────────────────────────────────────
+  // ── MAPA ─────────────────────────────────────────────────
   Widget _buildMap() {
     final stop = _currentStop;
     return FlutterMap(
@@ -434,12 +464,10 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
           userAgentPackageName: 'com.citylore.app',
         ),
         MarkerLayer(markers: [
-          // Paradas de la ruta
           ..._route.asMap().entries.map((e) {
             final s = e.value;
             final isCurrent = e.key == _idx;
             final isDone = e.key < _idx;
-            if (s.branch == 'bifurcacion') return null;
             return Marker(
               point: LatLng(s.lat, s.lng),
               width: isCurrent ? 44 : 32,
@@ -450,7 +478,9 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
                   color: isCurrent ? kGold : (isDone ? kGold.withOpacity(0.4) : kSurface),
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: isCurrent ? kGoldLight : (isDone ? kGold.withOpacity(0.6) : kBorder),
+                    color: isCurrent
+                        ? kGoldLight
+                        : (isDone ? kGold.withOpacity(0.6) : kBorder),
                     width: isCurrent ? 2.5 : 1.5,
                   ),
                 ),
@@ -459,23 +489,25 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
                       style: TextStyle(
                           fontSize: isCurrent ? 14 : 10,
                           fontWeight: FontWeight.bold,
-                          color: isCurrent ? Colors.black : (isDone ? kGold : kMuted))),
+                          color: isCurrent
+                              ? Colors.black
+                              : (isDone ? kGold : kMuted))),
                 ),
               ),
             );
-          }).whereType<Marker>().toList(),
-          // Ubicación del usuario
-          if (_userLat != null) Marker(
-            point: LatLng(_userLat!, _userLng!),
-            width: 20, height: 20,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2),
+          }).toList(),
+          if (_userLat != null)
+            Marker(
+              point: LatLng(_userLat!, _userLng!),
+              width: 20, height: 20,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2),
+                ),
               ),
             ),
-          ),
         ]),
       ],
     );
@@ -484,9 +516,11 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     final stop = _currentStop;
-    final isBif = stop.branch == 'bifurcacion';
+    final isBif = _atBifurcation;
     final progress = _dur.inMilliseconds > 0
-        ? (_pos.inMilliseconds / _dur.inMilliseconds).clamp(0.0, 1.0) : 0.0;
+        ? (_pos.inMilliseconds / _dur.inMilliseconds).clamp(0.0, 1.0)
+        : 0.0;
+    final isLast = !isBif && _idx == _route.length - 1 && _chosenBranch != null;
 
     return Scaffold(
       backgroundColor: kBg,
@@ -494,157 +528,209 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
 
         // ── TOP BAR ──
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), color: kSurface,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          color: kSurface,
           child: Row(children: [
-            GestureDetector(onTap: () { _player.stop(); Navigator.pop(context); },
-                child: Container(width: 36, height: 36,
-                    decoration: BoxDecoration(border: Border.all(color: kBorder), borderRadius: BorderRadius.circular(10)),
-                    child: const Icon(Icons.arrow_back, color: kText, size: 18))),
+            GestureDetector(
+              onTap: () { _player.stop(); Navigator.pop(context); },
+              child: Container(
+                  width: 36, height: 36,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: kBorder),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: const Icon(Icons.arrow_back, color: kText, size: 18)),
+            ),
             const SizedBox(width: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(color: kGold.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(20), border: Border.all(color: kGold)),
+              decoration: BoxDecoration(
+                  color: kGold.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: kGold)),
               child: Text(ts(_lang, 'mode_label'),
-                  style: const TextStyle(fontSize: 10, color: kGold, letterSpacing: 2, fontWeight: FontWeight.w600)),
+                  style: const TextStyle(
+                      fontSize: 10, color: kGold,
+                      letterSpacing: 2, fontWeight: FontWeight.w600)),
             ),
             const Spacer(),
             langPill(_lang, (l) => setState(() { _lang = l; _loadAudio(); })),
           ]),
         ),
 
-        // ── MAPA (arriba) ──
-        SizedBox(
-          height: 220,
-          child: _buildMap(),
-        ),
+        // ── MAPA ──
+        SizedBox(height: 220, child: _buildMap()),
 
-        // ── DOTS DE PROGRESO ──
+        // ── BARRA DE PROGRESO ──
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
           child: Row(children: List.generate(_route.length, (i) {
             Color c = i < _idx ? kGold : (i == _idx ? kGoldLight : kBorder);
-            return Expanded(child: Container(height: 3, margin: const EdgeInsets.symmetric(horizontal: 2),
-                decoration: BoxDecoration(color: c, borderRadius: BorderRadius.circular(2))));
+            return Expanded(
+              child: Container(
+                height: 3,
+                margin: const EdgeInsets.symmetric(horizontal: 2),
+                decoration: BoxDecoration(color: c, borderRadius: BorderRadius.circular(2)),
+              ),
+            );
           })),
         ),
 
-        // ── HISTORIA (abajo, scrollable) ──
+        // ── CONTENIDO ──
         Expanded(child: SingleChildScrollView(child: Column(children: [
           const SizedBox(height: 12),
 
-          // Pista
+          // Pista / label bifurcación
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(color: kSurface, borderRadius: BorderRadius.circular(14),
+            decoration: BoxDecoration(
+                color: kSurface,
+                borderRadius: BorderRadius.circular(14),
                 border: Border.all(color: isBif ? kGold : kBorder)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(children: [
-                Container(width: 8, height: 8, decoration: const BoxDecoration(color: kGold, shape: BoxShape.circle)),
+                Container(width: 8, height: 8,
+                    decoration: const BoxDecoration(color: kGold, shape: BoxShape.circle)),
                 const SizedBox(width: 8),
                 Text(isBif ? ts(_lang, 'branch_label') : ts(_lang, 'clue'),
-                    style: const TextStyle(fontSize: 10, color: kGold, letterSpacing: 2, fontWeight: FontWeight.w600)),
+                    style: const TextStyle(
+                        fontSize: 10, color: kGold,
+                        letterSpacing: 2, fontWeight: FontWeight.w600)),
               ]),
               const SizedBox(height: 8),
-              Text(stop.hint(_lang),
-                  style: const TextStyle(fontSize: 14, color: kText, fontStyle: FontStyle.italic, height: 1.5)),
+              Text(
+                isBif
+                    ? ts(_lang, 'who_is_lena')
+                    : stop.lugar,
+                style: const TextStyle(
+                    fontSize: 14, color: kText,
+                    fontStyle: FontStyle.italic, height: 1.5),
+              ),
             ]),
           ),
           const SizedBox(height: 10),
 
-          // Lugar + distancia GPS
+          // Nombre del lugar + distancia GPS
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(children: [
-              Text(stop.lugar, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: kText)),
+              Text(stop.lugar,
+                  style: const TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.bold, color: kText)),
               const Spacer(),
               if (_userLat != null && !isBif)
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(color: kSurface2, borderRadius: BorderRadius.circular(8),
+                  decoration: BoxDecoration(
+                      color: kSurface2,
+                      borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: kBorder)),
-                  child: Text('${_haversine(_userLat!, _userLng!, stop.lat, stop.lng).round()}m',
+                  child: Text(
+                      '${_haversine(_userLat!, _userLng!, stop.lat, stop.lng).round()}m',
                       style: const TextStyle(fontSize: 11, color: kMuted)),
                 ),
             ]),
           ),
           const SizedBox(height: 10),
 
-          // Bifurcación
+          // ── BIFURCACIÓN ──
           if (isBif) Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(children: [
-              Text(ts(_lang, 'who_is_lena'),
-                  style: const TextStyle(fontSize: 13, color: kGold, fontWeight: FontWeight.w600)),
-              const SizedBox(height: 10),
-              Row(children: [
-                Expanded(child: GestureDetector(
-                  onTap: () => _chooseBranch('A'),
-                  child: Container(padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(color: kSurface, borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: kBorder)),
-                    child: Column(children: [
-                      const Text('💨', style: TextStyle(fontSize: 24)),
-                      const SizedBox(height: 6),
-                      Text(ts(_lang, 'branch_a_title'), style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: kText), textAlign: TextAlign.center),
-                      const SizedBox(height: 4),
-                      Text(ts(_lang, 'branch_a_desc'), style: const TextStyle(fontSize: 11, color: kMuted), textAlign: TextAlign.center),
-                    ]),
-                  ),
-                )),
-                const SizedBox(width: 10),
-                Expanded(child: GestureDetector(
-                  onTap: () => _chooseBranch('B'),
-                  child: Container(padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(color: kSurface, borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: kBorder)),
-                    child: Column(children: [
-                      const Text('🏠', style: TextStyle(fontSize: 24)),
-                      const SizedBox(height: 6),
-                      Text(ts(_lang, 'branch_b_title'), style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: kText), textAlign: TextAlign.center),
-                      const SizedBox(height: 4),
-                      Text(ts(_lang, 'branch_b_desc'), style: const TextStyle(fontSize: 11, color: kMuted), textAlign: TextAlign.center),
-                    ]),
-                  ),
-                )),
-              ]),
+            child: Row(children: [
+              Expanded(child: GestureDetector(
+                onTap: () => _chooseBranch('A'),
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                      color: kSurface,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: kBorder)),
+                  child: Column(children: [
+                    const Text('💨', style: TextStyle(fontSize: 24)),
+                    const SizedBox(height: 6),
+                    Text(ts(_lang, 'branch_a_title'),
+                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: kText),
+                        textAlign: TextAlign.center),
+                    const SizedBox(height: 4),
+                    Text(ts(_lang, 'branch_a_desc'),
+                        style: const TextStyle(fontSize: 11, color: kMuted),
+                        textAlign: TextAlign.center),
+                  ]),
+                ),
+              )),
+              const SizedBox(width: 10),
+              Expanded(child: GestureDetector(
+                onTap: () => _chooseBranch('B'),
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                      color: kSurface,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: kBorder)),
+                  child: Column(children: [
+                    const Text('🏠', style: TextStyle(fontSize: 24)),
+                    const SizedBox(height: 6),
+                    Text(ts(_lang, 'branch_b_title'),
+                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: kText),
+                        textAlign: TextAlign.center),
+                    const SizedBox(height: 4),
+                    Text(ts(_lang, 'branch_b_desc'),
+                        style: const TextStyle(fontSize: 11, color: kMuted),
+                        textAlign: TextAlign.center),
+                  ]),
+                ),
+              )),
             ]),
           ),
 
-          // Reproductor
+          // ── REPRODUCTOR ──
           if (!isBif) ...[
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
               padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(color: kSurface, borderRadius: BorderRadius.circular(16),
+              decoration: BoxDecoration(
+                  color: kSurface,
+                  borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: kBorder)),
               child: Row(children: [
-                GestureDetector(onTap: _togglePlay,
-                    child: Container(width: 48, height: 48,
-                        decoration: const BoxDecoration(color: kGold, shape: BoxShape.circle),
-                        child: Icon(_playing ? Icons.pause : Icons.play_arrow, color: Colors.black, size: 22))),
+                GestureDetector(
+                  onTap: _togglePlay,
+                  child: Container(
+                      width: 48, height: 48,
+                      decoration: const BoxDecoration(color: kGold, shape: BoxShape.circle),
+                      child: Icon(_playing ? Icons.pause : Icons.play_arrow,
+                          color: Colors.black, size: 22)),
+                ),
                 const SizedBox(width: 12),
                 Expanded(child: Column(children: [
                   SliderTheme(
-                    data: const SliderThemeData(trackHeight: 3, activeTrackColor: kGold,
-                        inactiveTrackColor: kSurface2, thumbColor: kGold),
-                    child: Slider(value: progress, onChanged: (v) {
-                      if (_dur == Duration.zero) return;
-                      _player.seek(Duration(milliseconds: (_dur.inMilliseconds * v).round()));
-                    }),
+                    data: const SliderThemeData(
+                        trackHeight: 3,
+                        activeTrackColor: kGold,
+                        inactiveTrackColor: kSurface2,
+                        thumbColor: kGold),
+                    child: Slider(
+                      value: progress,
+                      onChanged: (v) {
+                        if (_dur == Duration.zero) return;
+                        _player.seek(Duration(
+                            milliseconds: (_dur.inMilliseconds * v).round()));
+                      },
+                    ),
                   ),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                    Text(_fmtTime(_pos), style: const TextStyle(fontSize: 11, color: kMuted)),
-                    Text(_fmtTime(_dur), style: const TextStyle(fontSize: 11, color: kMuted)),
+                    Text(_fmtTime(_pos),
+                        style: const TextStyle(fontSize: 11, color: kMuted)),
+                    Text(_fmtTime(_dur),
+                        style: const TextStyle(fontSize: 11, color: kMuted)),
                   ]),
                 ])),
               ]),
             ),
           ],
 
-          // GPS + siguiente
-          if (!isBif && _idx < _route.length - 1) ...[
+          // ── GPS + SIGUIENTE (si no es bifurcación ni fin) ──
+          if (!isBif && !isLast && _idx < _route.length - 1) ...[
             const SizedBox(height: 8),
             if (_userLat != null) Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -659,15 +745,25 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
                       color: _nearStop ? kGold : kMuted, size: 16),
                   const SizedBox(width: 8),
                   Expanded(child: Text(
-                      _nearStop ? ts(_lang, 'near_stop') : '${ts(_lang, 'walk_to')} ${stop.lugar}',
-                      style: TextStyle(fontSize: 12, color: _nearStop ? kGold : kMuted))),
+                    _nearStop
+                        ? ts(_lang, 'near_stop')
+                        : '${ts(_lang, 'walk_to')} ${stop.lugar}',
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: _nearStop ? kGold : kMuted),
+                  )),
                   if (_nearStop) GestureDetector(
                     onTap: _nextStop,
                     child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(color: kGold, borderRadius: BorderRadius.circular(8)),
-                        child: Text(ts(_lang, 'next'),
-                            style: const TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w600))),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                          color: kGold, borderRadius: BorderRadius.circular(8)),
+                      child: Text(ts(_lang, 'next'),
+                          style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600)),
+                    ),
                   ),
                 ]),
               ),
@@ -678,8 +774,11 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
               child: GestureDetector(
                 onTap: _nextStop,
                 child: Container(
-                  width: double.infinity, padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: BoxDecoration(color: kSurface2, borderRadius: BorderRadius.circular(14),
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                      color: kSurface2,
+                      borderRadius: BorderRadius.circular(14),
                       border: Border.all(color: kBorder)),
                   child: Center(child: Text(ts(_lang, 'next_stop'),
                       style: const TextStyle(fontSize: 13, color: kMuted))),
@@ -688,35 +787,47 @@ class _SorpresaPlayerScreenState extends State<SorpresaPlayerScreen> {
             ),
           ],
 
-          // Fin
-          if (_idx == _route.length - 1 && !isBif) ...[
+          // ── FIN ──
+          if (isLast) ...[
             const SizedBox(height: 8),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Container(
                 width: double.infinity, padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(color: kGold.withOpacity(0.08),
-                    borderRadius: BorderRadius.circular(16), border: Border.all(color: kGold)),
+                decoration: BoxDecoration(
+                    color: kGold.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: kGold)),
                 child: Column(children: [
                   const Text('✨', style: TextStyle(fontSize: 32)),
                   const SizedBox(height: 8),
                   Text(ts(_lang, 'end_title'),
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kGold)),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold, color: kGold)),
                   const SizedBox(height: 4),
-                  Text(ts(_lang, 'end_sub'), style: const TextStyle(fontSize: 13, color: kMuted)),
+                  Text(ts(_lang, 'end_sub'),
+                      style: const TextStyle(fontSize: 13, color: kMuted)),
                   const SizedBox(height: 16),
                   GestureDetector(
-                    onTap: () { _player.stop(); Navigator.pop(context); Navigator.pop(context); },
+                    onTap: () {
+                      _player.stop();
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
                     child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                        decoration: BoxDecoration(color: kGold, borderRadius: BorderRadius.circular(10)),
-                        child: Text(ts(_lang, 'back_home'),
-                            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600))),
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: kGold, borderRadius: BorderRadius.circular(10)),
+                      child: Text(ts(_lang, 'back_home'),
+                          style: const TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w600)),
+                    ),
                   ),
                 ]),
               ),
             ),
           ],
+
           const SizedBox(height: 24),
         ]))),
       ])),
