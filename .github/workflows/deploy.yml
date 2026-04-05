@@ -28,7 +28,15 @@ jobs:
 
       - name: Disable service worker
         run: |
-          sed -i 's/_flutter.loader.load({.*})/_flutter.loader.load({})/g' build/web/flutter_bootstrap.js
+          python3 -c "
+          import re
+          with open('build/web/flutter_bootstrap.js', 'r') as f:
+              content = f.read()
+          content = re.sub(r'_flutter\.loader\.load\(\{[^}]*serviceWorkerSettings[^}]*\}[^)]*\)', '_flutter.loader.load({})', content)
+          with open('build/web/flutter_bootstrap.js', 'w') as f:
+              f.write(content)
+          print('Done')
+          "
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
