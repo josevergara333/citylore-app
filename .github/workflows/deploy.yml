@@ -29,6 +29,12 @@ jobs:
       - name: Build web
         run: flutter build web --base-href /citylore-app/
 
+      - name: Bust CDN cache
+        run: |
+          mv build/web/main.dart.js build/web/main.dart.v2.js
+          sed -i 's|main.dart.js|main.dart.v2.js|g' build/web/index.html
+          sed -i 's|main.dart.js|main.dart.v2.js|g' build/web/flutter_bootstrap.js
+
       - name: Unregister service worker
         run: |
           sed -i 's|</body>|<script>if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(r=>{for(let s of r)s.unregister();});}</script></body>|' build/web/index.html
