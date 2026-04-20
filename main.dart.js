@@ -7544,8 +7544,8 @@ aAS(a){var s,r,q,p,o,n,m,l,k="avAudioSessionCategory",j=null,i="avAudioSessionCa
 if(a.i(0,k)==null)s=j
 else{s=B.KN.i(0,A.bM(a.i(0,k)))
 s.toString}r=a.i(0,i)==null?j:new A.In(A.bt(a.i(0,i)))
-q=a.i(0,h)==null?j:B.HK[A.bt(a.i(0,h))]
-p=a.i(0,g)==null?j:B.HE[A.bt(a.i(0,g))]
+q=a.i(0,h)==null?j:B.HJ[A.bt(a.i(0,h))]
+p=a.i(0,g)==null?j:B.HD[A.bt(a.i(0,g))]
 o=a.i(0,f)==null?j:new A.Io(A.bt(a.i(0,f)))
 if(a.i(0,e)==null)n=j
 else{n=t.f.a(a.i(0,e)).e8(0,t.N,t.z)
@@ -30685,7 +30685,7 @@ if(g.b){q=t.f
 f=q.a(q.a(B.cb.hJ(a0)).i(0,"data"))
 e=A.c7(f.i(0,"message"))
 if(e!=null&&e.length!==0){d=A.Lv(f,"assertiveness")
-g.a.TY(e,B.HD[d==null?0:d])}}c.fm(a1,B.cb.c8(!0))
+g.a.TY(e,B.HC[d==null?0:d])}}c.fm(a1,B.cb.c8(!0))
 return
 case"flutter/navigation":q=t.e8
 if(q.a(c.gcW().b.i(0,0))!=null)q.a(c.gcW().b.i(0,0)).Ir(a0).bI(new A.a3h(c,a1),t.P)
@@ -41014,7 +41014,7 @@ A.asf.prototype={
 $0(){return this.a.d=this.b.a},
 $S:0}
 A.ask.prototype={
-$2(a,b){return new A.qW(B.HH[b],this.a.d,null)},
+$2(a,b){return new A.qW(B.HG[b],this.a.d,null)},
 $S:257}
 A.asl.prototype={
 $0(){var s=A.mR(new A.ash(this.a),null,t.z)
@@ -41539,7 +41539,7 @@ i=o?d:B.ai
 h=A.aP(16)
 g=A.be(o?B.l:B.E,1)
 f=A.eJ(q,"start")
-return A.qk(B.bh,A.qj(A.c4(A.b([b,A.da(A.OA(A.c4(A.b([B.i9,B.Vs,B.i9,c,B.b2,r,B.zl,new A.rg(B.zs,q,n==="lena",new A.asb(e),d),B.bc,new A.rg(B.zp,q,m==="klaus",new A.asc(e),d),B.bc,new A.rg(B.zq,q,l==="clara",new A.asd(e),d),B.bc,new A.rg(B.zr,q,p==="otto",new A.ase(e),d),B.zl,A.bY(d,A.kw(A.dZ(A.aj(f,d,d,d,A.cT(d,d,e.e!=null?B.n:B.a4,d,d,d,d,d,d,d,d,16,d,d,B.ak,d,d,!0,d,d,d,d,d,d,d,d),d,d),d,d),new A.au(i,d,g,h,d,j,B.t),B.aa,d,B.F5,1/0),B.y,!1,d,d,d,d,d,d,d,d,d,d,d,d,k,d,d,d)],s),B.w,B.r,B.u),B.Fm,B.aU),1)],s),B.w,B.r,B.u),!0),d)}}
+return A.qk(B.bh,A.qj(A.c4(A.b([b,A.da(A.OA(A.c4(A.b([B.i9,B.Vs,B.i9,c,B.b2,r,B.zl,new A.rg(B.zs,q,n==="lena",new A.asb(e),d),B.bc,new A.rg(B.zq,q,m==="klaus",new A.asc(e),d),B.bc,new A.rg(B.zr,q,l==="clara",new A.asd(e),d),B.bc,new A.rg(B.zp,q,p==="otto",new A.ase(e),d),B.zl,A.bY(d,A.kw(A.dZ(A.aj(f,d,d,d,A.cT(d,d,e.e!=null?B.n:B.a4,d,d,d,d,d,d,d,d,16,d,d,B.ak,d,d,!0,d,d,d,d,d,d,d,d),d,d),d,d),new A.au(i,d,g,h,d,j,B.t),B.aa,d,B.F5,1/0),B.y,!1,d,d,d,d,d,d,d,d,d,d,d,d,k,d,d,d)],s),B.w,B.r,B.u),B.Fm,B.aU),1)],s),B.w,B.r,B.u),!0),d)}}
 A.as8.prototype={
 $0(){A.e2(this.a).jc(null)
 return null},
@@ -41563,21 +41563,21 @@ $0(){var s=this.a
 return s.Z(new A.as4(s))},
 $S:0}
 A.as4.prototype={
-$0(){return this.a.e=B.zp},
+$0(){return this.a.e=B.zq},
 $S:0}
 A.asd.prototype={
 $0(){var s=this.a
 return s.Z(new A.as3(s))},
 $S:0}
 A.as3.prototype={
-$0(){return this.a.e=B.zq},
+$0(){return this.a.e=B.zr},
 $S:0}
 A.ase.prototype={
 $0(){var s=this.a
 return s.Z(new A.as2(s))},
 $S:0}
 A.as2.prototype={
-$0(){return this.a.e=B.zr},
+$0(){return this.a.e=B.zp},
 $S:0}
 A.asa.prototype={
 $0(){var s=A.mR(new A.as6(this.a),null,t.z)
@@ -79879,7 +79879,7 @@ g.p2=A.z(t.D2,q)
 p=g.p1
 s=s.c
 g.p1=A.z(s,q)
-for(o=0;o<11;++o){n=B.HI[o]
+for(o=0;o<11;++o){n=B.HH[o]
 m=f.aly(n)
 l=m==null?null:m.a
 k=p.i(0,n)
@@ -85659,7 +85659,7 @@ k=J.cJ(s,j).d}else{s=s.e.b!==B.p?s.gq():l
 s.toString
 J.cJ(s,j).d=k}}s=m.a
 r=s.ap
-r=(r&&a.a!==B.cW?s.ap=!1:r)?B.hM:B.HF[a.a.a]
+r=(r&&a.a!==B.cW?s.ap=!1:r)?B.hM:B.HE[a.a.a]
 q=a.f
 if(q==null)q=l
 else{p=q.a
@@ -86522,7 +86522,7 @@ r=A.aze(a.i(0,"volume"))
 q=A.aze(a.i(0,"speed"))
 p=A.aze(a.i(0,"pitch"))
 o=a.i(0,n)!=null?B.oa[A.bt(a.i(0,n))]:null
-return new A.k1(s,r,q,p,o,a.i(0,m)!=null?B.HJ[A.bt(a.i(0,m))]:null)},
+return new A.k1(s,r,q,p,o,a.i(0,m)!=null?B.HI[A.bt(a.i(0,m))]:null)},
 $S:608}
 A.a6U.prototype={
 oJ(a){return this.apO(a)},
@@ -92952,18 +92952,18 @@ B.ib=new A.lq(3,"justify")
 B.b3=new A.lq(4,"start")
 B.l2=new A.lq(5,"end")
 B.HA=A.b(s([B.f8,B.l1,B.cm,B.ib,B.b3,B.l2]),A.ae("D<lq>"))
-B.HD=A.b(s([B.iM,B.iN]),A.ae("D<xy>"))
+B.HC=A.b(s([B.iM,B.iN]),A.ae("D<xy>"))
 B.AE=new A.on(0,"defaultPolicy")
 B.AF=new A.on(1,"longFormAudio")
 B.AG=new A.on(2,"longFormVideo")
 B.AH=new A.on(3,"independent")
-B.HE=A.b(s([B.AE,B.AF,B.AG,B.AH]),A.ae("D<on>"))
+B.HD=A.b(s([B.AE,B.AF,B.AG,B.AH]),A.ae("D<on>"))
 B.dK=new A.f5(0,"idle")
 B.hM=new A.f5(1,"loading")
 B.Nd=new A.f5(2,"buffering")
 B.ku=new A.f5(3,"ready")
 B.hN=new A.f5(4,"completed")
-B.HF=A.b(s([B.dK,B.hM,B.Nd,B.ku,B.hN]),A.ae("D<f5>"))
+B.HE=A.b(s([B.dK,B.hM,B.Nd,B.ku,B.hN]),A.ae("D<f5>"))
 B.Dc=new A.hm("Berlin","Berl\xedn","\ud83c\udde9\ud83c\uddea","30 lugares \xb7 120 audios",!0)
 B.D9=new A.hm("Paris","Par\xeds","\ud83c\uddeb\ud83c\uddf7","Pr\xf3ximamente",!1)
 B.Dd=new A.hm("Roma","Roma","\ud83c\uddee\ud83c\uddf9","Pr\xf3ximamente",!1)
@@ -92974,7 +92974,7 @@ B.D4=new A.hm("Bangkok","Bangkok","\ud83c\uddf9\ud83c\udded","Pr\xf3ximamente",!
 B.Db=new A.hm("Istanbul","Estambul","\ud83c\uddf9\ud83c\uddf7","Pr\xf3ximamente",!1)
 B.D8=new A.hm("London","Londres","\ud83c\uddec\ud83c\udde7","Pr\xf3ximamente",!1)
 B.D5=new A.hm("BuenosAires","Buenos Aires","\ud83c\udde6\ud83c\uddf7","Pr\xf3ximamente",!1)
-B.HH=A.b(s([B.Dc,B.D9,B.Dd,B.Da,B.D6,B.D7,B.D4,B.Db,B.D8,B.D5]),A.ae("D<hm>"))
+B.HG=A.b(s([B.Dc,B.D9,B.Dd,B.Da,B.D6,B.D7,B.D4,B.Db,B.D8,B.D5]),A.ae("D<hm>"))
 B.au=new A.eH(0,"icon")
 B.aJ=new A.eH(1,"input")
 B.a6=new A.eH(2,"label")
@@ -92986,12 +92986,12 @@ B.aB=new A.eH(7,"suffixIcon")
 B.bD=new A.eH(8,"helperError")
 B.bR=new A.eH(9,"counter")
 B.c7=new A.eH(10,"container")
-B.HI=A.b(s([B.au,B.aJ,B.a6,B.aO,B.aP,B.aQ,B.a3,B.aB,B.bD,B.bR,B.c7]),A.ae("D<eH>"))
+B.HH=A.b(s([B.au,B.aJ,B.a6,B.aO,B.aP,B.aQ,B.a3,B.aB,B.bD,B.bR,B.c7]),A.ae("D<eH>"))
 B.IN=new A.mO("en","US")
 B.o8=A.b(s([B.IN]),t.ss)
 B.kM=new A.Cg(0,"none")
 B.kN=new A.Cg(1,"all")
-B.HJ=A.b(s([B.kM,B.kN]),A.ae("D<Cg>"))
+B.HI=A.b(s([B.kM,B.kN]),A.ae("D<Cg>"))
 B.Xp=new A.lC(0,0)
 B.Xu=new A.lC(1,0.05)
 B.Xs=new A.lC(3,0.08)
@@ -93007,7 +93007,7 @@ B.AA=new A.hR(5,"videoChat")
 B.AB=new A.hR(6,"videoRecording")
 B.AC=new A.hR(7,"voiceChat")
 B.AD=new A.hR(8,"voicePrompt")
-B.HK=A.b(s([B.lJ,B.Aw,B.Ax,B.Ay,B.Az,B.AA,B.AB,B.AC,B.AD]),A.ae("D<hR>"))
+B.HJ=A.b(s([B.lJ,B.Aw,B.Ax,B.Ay,B.Az,B.AA,B.AB,B.AC,B.AD]),A.ae("D<hR>"))
 B.HR=A.b(s([-1,0,0,1,0,0,-1,0,1,0,0,0,-1,1,0,1,1,1,1,0]),t.n)
 B.Bk=new A.IZ(2,"outer")
 B.mC=new A.L(0.09803921568627451,0,0,0,B.i)
@@ -93771,7 +93771,7 @@ B.HY=A.b(s([8589934850,8589934850,8589934851,null]),t.Z)
 B.uo=new A.cZ(["*",B.H6,"+",B.H7,"-",B.H8,".",B.H9,"/",B.Ha,"0",B.Hb,"1",B.Hc,"2",B.He,"3",B.Hg,"4",B.Hh,"5",B.Hi,"6",B.Hj,"7",B.Hk,"8",B.Hl,"9",B.Hn,"Alt",B.HV,"AltGraph",B.GW,"ArrowDown",B.GX,"ArrowLeft",B.GY,"ArrowRight",B.GZ,"ArrowUp",B.H_,"Clear",B.H4,"Control",B.HW,"Delete",B.GV,"End",B.H0,"Enter",B.GU,"Home",B.H1,"Insert",B.H5,"Meta",B.HX,"PageDown",B.H2,"PageUp",B.H3,"Shift",B.HY],A.ae("cZ<p,N<j?>>"))
 B.Hm=A.b(s([B.ol,null,null,B.u1]),t.L)
 B.It=A.b(s([B.tO,null,null,B.u2]),t.L)
-B.HG=A.b(s([B.tP,null,null,B.u3]),t.L)
+B.HF=A.b(s([B.tP,null,null,B.u3]),t.L)
 B.I_=A.b(s([B.tQ,null,null,B.cN]),t.L)
 B.GO=A.b(s([B.tR,null,null,B.u4]),t.L)
 B.IG=A.b(s([B.tS,null,null,B.k0]),t.L)
@@ -93781,7 +93781,7 @@ B.IL=A.b(s([B.tV,null,null,B.eI]),t.L)
 B.IA=A.b(s([B.tW,null,null,B.cP]),t.L)
 B.Hq=A.b(s([B.tX,null,null,B.k1]),t.L)
 B.GT=A.b(s([B.tY,null,null,B.cQ]),t.L)
-B.HC=A.b(s([B.tZ,null,null,B.eJ]),t.L)
+B.HB=A.b(s([B.tZ,null,null,B.eJ]),t.L)
 B.Iu=A.b(s([B.u_,null,null,B.cR]),t.L)
 B.Iw=A.b(s([B.u0,null,null,B.eK]),t.L)
 B.Hu=A.b(s([B.eF,B.eF,B.hp,null]),t.L)
@@ -93801,7 +93801,7 @@ B.Hw=A.b(s([B.eG,B.eG,B.hq,null]),t.L)
 B.HQ=A.b(s([B.eC,null,null,B.eI]),t.L)
 B.Ic=A.b(s([B.eD,null,null,B.eK]),t.L)
 B.Hx=A.b(s([B.cf,B.cf,B.cM,null]),t.L)
-B.L2=new A.cZ(["*",B.Hm,"+",B.It,"-",B.HG,".",B.I_,"/",B.GO,"0",B.IG,"1",B.IB,"2",B.Ht,"3",B.IL,"4",B.IA,"5",B.Hq,"6",B.GT,"7",B.HC,"8",B.Iu,"9",B.Iw,"Alt",B.Hu,"AltGraph",B.IH,"ArrowDown",B.HL,"ArrowLeft",B.HM,"ArrowRight",B.HN,"ArrowUp",B.IJ,"Clear",B.Iy,"Control",B.Hv,"Delete",B.I7,"End",B.HO,"Enter",B.Hp,"Home",B.HP,"Insert",B.Iz,"Meta",B.Hw,"PageDown",B.HQ,"PageUp",B.Ic,"Shift",B.Hx],A.ae("cZ<p,N<f?>>"))
+B.L2=new A.cZ(["*",B.Hm,"+",B.It,"-",B.HF,".",B.I_,"/",B.GO,"0",B.IG,"1",B.IB,"2",B.Ht,"3",B.IL,"4",B.IA,"5",B.Hq,"6",B.GT,"7",B.HB,"8",B.Iu,"9",B.Iw,"Alt",B.Hu,"AltGraph",B.IH,"ArrowDown",B.HL,"ArrowLeft",B.HM,"ArrowRight",B.HN,"ArrowUp",B.IJ,"Clear",B.Iy,"Control",B.Hv,"Delete",B.I7,"End",B.HO,"Enter",B.Hp,"Home",B.HP,"Insert",B.Iz,"Meta",B.Hw,"PageDown",B.HQ,"PageUp",B.Ic,"Shift",B.Hx],A.ae("cZ<p,N<f?>>"))
 B.Lu={".aac":0,".mp3":1,".ogg":2,".opus":3,".wav":4,".weba":5,".mp4":6,".m4a":7,".aif":8,".aifc":9,".aiff":10,".m3u":11}
 B.L3=new A.aN(B.Lu,["audio/aac","audio/mpeg","audio/ogg","audio/opus","audio/wav","audio/webm","audio/mp4","audio/mp4","audio/x-aiff","audio/x-aiff","audio/x-aiff","audio/x-mpegurl"],t.l)
 B.Ly={KeyA:0,KeyB:1,KeyC:2,KeyD:3,KeyE:4,KeyF:5,KeyG:6,KeyH:7,KeyI:8,KeyJ:9,KeyK:10,KeyL:11,KeyM:12,KeyN:13,KeyO:14,KeyP:15,KeyQ:16,KeyR:17,KeyS:18,KeyT:19,KeyU:20,KeyV:21,KeyW:22,KeyX:23,KeyY:24,KeyZ:25,Digit1:26,Digit2:27,Digit3:28,Digit4:29,Digit5:30,Digit6:31,Digit7:32,Digit8:33,Digit9:34,Digit0:35,Minus:36,Equal:37,BracketLeft:38,BracketRight:39,Backslash:40,Semicolon:41,Quote:42,Backquote:43,Comma:44,Period:45,Slash:46}
@@ -94511,61 +94511,61 @@ B.Q_=new A.Cr(null,null,null,null,null,null,null,null,null,null,null,null,null,n
 B.zo=new A.Ct(0,"permissive")
 B.Q0=new A.Ct(1,"normal")
 B.Q1=new A.Ct(2,"forced")
+B.Qo=new A.bc("otto_01","shared","Alexanderplatz",52.5219,13.4133)
+B.Q2=new A.bc("otto_02","shared","Fernsehturm",52.5208,13.4094)
+B.Qx=new A.bc("otto_03","shared","Marx-Engels-Forum",52.5185,13.4046)
+B.QL=new A.bc("otto_04","shared","Humboldt Forum",52.5172,13.4017)
+B.Q9=new A.bc("otto_05","shared","Nikolaiviertel",52.5174,13.407)
+B.Qw=new A.bc("otto_06","shared","Rotes Rathaus",52.5183,13.4086)
+B.Qg=new A.bc("otto_07a","A","Tr\xe4nenpalast",52.5209,13.3872)
+B.Qn=new A.bc("otto_08a","A","Friedrichstadtpalast",52.5239,13.3888)
+B.QE=new A.bc("otto_09a","A","Neue Wache",52.5175,13.3971)
+B.Qa=new A.bc("otto_07b","B","Gendarmenmarkt",52.5135,13.3933)
+B.Qh=new A.bc("otto_08b","B","Bebelplatz",52.5168,13.3933)
+B.Qp=new A.bc("otto_09b","B","Staatsoper Unter den Linden",52.5163,13.3933)
+B.HK=A.b(s([B.Qo,B.Q2,B.Qx,B.QL,B.Q9,B.Qw,B.Qg,B.Qn,B.QE,B.Qa,B.Qh,B.Qp]),t.SY)
+B.zp=new A.v_("otto","Otto Fischer","\ud83d\udcc4","Funcionario del Estado \xb7 Berl\xedn 9N 1989","Berl\xedn Oriental, 9 de noviembre de 1989. Otto es un funcionario del Ministerio de Informaci\xf3n. Esa tarde tiene que leer un decreto en una rueda de prensa. No lo ha le\xeddo bien. Lo que pase en las pr\xf3ximas horas cambiar\xe1 la historia de Berl\xedn.","East Berlin, 9 November 1989. Otto is a Ministry of Information official. That afternoon he has to read a decree at a press conference. He has not read it carefully enough. What happens in the next few hours will change the history of Berlin.","Ost-Berlin, 9. November 1989. Otto ist Beamter im Ministerium f\xfcr Information. An diesem Nachmittag muss er auf einer Pressekonferenz ein Dekret verlesen. Er hat es nicht sorgf\xe4ltig genug gelesen. Was in den n\xe4chsten Stunden passiert, wird die Geschichte Berlins ver\xe4ndern.","Berlino Est, 9 novembre 1989. Otto \xe8 un funzionario del Ministero dell'Informazione. Nel pomeriggio deve leggere un decreto in una conferenza stampa. Non l'ha letto con abbastanza attenzione. Quello che accadr\xe0 nelle prossime ore cambier\xe0 la storia di Berlino.","https://pub-b20ae9c7d6c140aa868ea5aba6210b5f.r2.dev/audios/sorpresa/berlin/otto/v1/",B.HK,"El que fue al Muro","Va a ver lo que provoc\xf3","El que se qued\xf3","Observa desde la distancia",95,3.8)
 B.Qv=new A.bc("klaus_01","shared","Alexanderplatz",52.5219,13.4132)
-B.QE=new A.bc("klaus_02","shared","Fernsehturm",52.5208,13.4094)
+B.QF=new A.bc("klaus_02","shared","Fernsehturm",52.5208,13.4094)
 B.QK=new A.bc("klaus_03","shared","Marx-Engels-Forum",52.5188,13.4044)
-B.Qx=new A.bc("klaus_04","shared","Nikolaiviertel",52.5161,13.4068)
-B.Q8=new A.bc("klaus_05","shared","Rotes Rathaus",52.5175,13.4083)
+B.Qy=new A.bc("klaus_04","shared","Nikolaiviertel",52.5161,13.4068)
+B.Qb=new A.bc("klaus_05","shared","Rotes Rathaus",52.5175,13.4083)
 B.QM=new A.bc("klaus_06","shared","Gendarmenmarkt",52.5135,13.3933)
-B.Q5=new A.bc("klaus_07a","A","Bebelplatz",52.5168,13.3933)
-B.Qz=new A.bc("klaus_08a","A","Neue Wache",52.5175,13.3971)
-B.Qi=new A.bc("klaus_09a","A","Checkpoint Charlie",52.5075,13.3904)
-B.Q4=new A.bc("klaus_07b","B","Bebelplatz",52.5168,13.3933)
-B.Qb=new A.bc("klaus_08b","B","Neue Wache",52.5175,13.3971)
+B.Q6=new A.bc("klaus_07a","A","Bebelplatz",52.5168,13.3933)
+B.QA=new A.bc("klaus_08a","A","Neue Wache",52.5175,13.3971)
+B.Qj=new A.bc("klaus_09a","A","Checkpoint Charlie",52.5075,13.3904)
+B.Q5=new A.bc("klaus_07b","B","Bebelplatz",52.5168,13.3933)
+B.Qe=new A.bc("klaus_08b","B","Neue Wache",52.5175,13.3971)
 B.QN=new A.bc("klaus_09b","B","Nikolaiviertel (regreso)",52.5161,13.4068)
-B.Is=A.b(s([B.Qv,B.QE,B.QK,B.Qx,B.Q8,B.QM,B.Q5,B.Qz,B.Qi,B.Q4,B.Qb,B.QN]),t.SY)
-B.zp=new A.v_("klaus","Klaus Brenner","\ud83d\udd75\ufe0f","Detective del Este \xb7 Berl\xedn 1975","Berl\xedn Oriental, 1975. Klaus es detective en la Volkspolizei y lleva a\xf1os ignorando lo que no quiere ver. Hasta que un caso lo lleva demasiado cerca de la Stasi. \xbfColaborar o resistir?","East Berlin, 1975. Klaus is a detective in the Volkspolizei who has spent years ignoring what he does not want to see. Until a case brings him too close to the Stasi. Collaborate or resist?","Ost-Berlin, 1975. Klaus ist Kriminaldetektiv bei der Volkspolizei und hat jahrelang weggesehen. Bis ihn ein Fall zu nah an die Stasi heranf\xfchrt. Kollaborieren oder widerstehen?","Berlino Est, 1975. Klaus \xe8 detective della Volkspolizei e da anni fa finta di non vedere. Finch\xe9 un caso lo porta troppo vicino alla Stasi. Collaborare o resistere?","https://pub-b20ae9c7d6c140aa868ea5aba6210b5f.r2.dev/audios/sorpresa/berlin/klaus/v1/",B.Is,"El que traicion\xf3","Colabora con la Stasi","El que resisti\xf3","Se niega a delatar",107,4.2)
-B.Qn=new A.bc("clara_01","shared","Anhalter Bahnhof",52.5047,13.3817)
+B.Is=A.b(s([B.Qv,B.QF,B.QK,B.Qy,B.Qb,B.QM,B.Q6,B.QA,B.Qj,B.Q5,B.Qe,B.QN]),t.SY)
+B.zq=new A.v_("klaus","Klaus Brenner","\ud83d\udd75\ufe0f","Detective del Este \xb7 Berl\xedn 1975","Berl\xedn Oriental, 1975. Klaus es detective en la Volkspolizei y lleva a\xf1os ignorando lo que no quiere ver. Hasta que un caso lo lleva demasiado cerca de la Stasi. \xbfColaborar o resistir?","East Berlin, 1975. Klaus is a detective in the Volkspolizei who has spent years ignoring what he does not want to see. Until a case brings him too close to the Stasi. Collaborate or resist?","Ost-Berlin, 1975. Klaus ist Kriminaldetektiv bei der Volkspolizei und hat jahrelang weggesehen. Bis ihn ein Fall zu nah an die Stasi heranf\xfchrt. Kollaborieren oder widerstehen?","Berlino Est, 1975. Klaus \xe8 detective della Volkspolizei e da anni fa finta di non vedere. Finch\xe9 un caso lo porta troppo vicino alla Stasi. Collaborare o resistere?","https://pub-b20ae9c7d6c140aa868ea5aba6210b5f.r2.dev/audios/sorpresa/berlin/klaus/v1/",B.Is,"El que traicion\xf3","Colabora con la Stasi","El que resisti\xf3","Se niega a delatar",107,4.2)
+B.Qq=new A.bc("clara_01","shared","Anhalter Bahnhof",52.5047,13.3817)
 B.QD=new A.bc("clara_02","shared","Topographie des Terrors",52.5062,13.3828)
-B.Q3=new A.bc("clara_03","shared","Checkpoint Charlie",52.5075,13.3904)
-B.Qk=new A.bc("clara_04","shared","Gendarmenmarkt",52.5135,13.3933)
-B.QF=new A.bc("clara_05","shared","Bebelplatz",52.5168,13.3933)
-B.Qq=new A.bc("clara_06","shared","Unter den Linden 17",52.5171,13.391)
+B.Q4=new A.bc("clara_03","shared","Checkpoint Charlie",52.5075,13.3904)
+B.Ql=new A.bc("clara_04","shared","Gendarmenmarkt",52.5135,13.3933)
+B.QG=new A.bc("clara_05","shared","Bebelplatz",52.5168,13.3933)
+B.Qs=new A.bc("clara_06","shared","Unter den Linden 17",52.5171,13.391)
 B.QH=new A.bc("clara_07a","A","Neue Wache",52.5175,13.3971)
-B.Qy=new A.bc("clara_08a","A","Lustgarten",52.519,13.4014)
+B.Qz=new A.bc("clara_08a","A","Lustgarten",52.519,13.4014)
 B.QC=new A.bc("clara_09a","A","Berliner Dom",52.519,13.4014)
-B.Qj=new A.bc("clara_07b","B","Nikolaiviertel",52.5161,13.4068)
-B.Q9=new A.bc("clara_08b","B","Marx-Engels-Forum",52.5188,13.4044)
+B.Qk=new A.bc("clara_07b","B","Nikolaiviertel",52.5161,13.4068)
+B.Qc=new A.bc("clara_08b","B","Marx-Engels-Forum",52.5188,13.4044)
 B.QJ=new A.bc("clara_09b","B","Rotes Rathaus",52.5175,13.4083)
-B.I2=A.b(s([B.Qn,B.QD,B.Q3,B.Qk,B.QF,B.Qq,B.QH,B.Qy,B.QC,B.Qj,B.Q9,B.QJ]),t.SY)
-B.zq=new A.v_("clara","Clara","\ud83c\udfb8","Punk del Oeste \xb7 Berl\xedn 1983","Berl\xedn Occidental, 1983. Clara tiene diecinueve a\xf1os, una guitarra y demasiadas preguntas sobre el Muro. Un d\xeda decide cruzar al otro lado. Lo que encuentra ah\xed no es lo que esperaba.","West Berlin, 1983. Clara is nineteen, has a guitar and too many questions about the Wall. One day she decides to cross to the other side. What she finds there is not what she expected.","West-Berlin, 1983. Clara ist neunzehn, hat eine Gitarre und zu viele Fragen \xfcber die Mauer. Eines Tages beschlie\xdft sie, auf die andere Seite zu gehen. Was sie dort findet, \xfcberrascht sie.","Berlino Ovest, 1983. Clara ha diciannove anni, una chitarra e troppe domande sul Muro. Un giorno decide di attraversare dall'altra parte. Quello che trova l\xec non \xe8 quello che si aspettava.","https://pub-b20ae9c7d6c140aa868ea5aba6210b5f.r2.dev/audios/sorpresa/berlin/clara/v1/",B.I2,"La que cruz\xf3","Pasa al Berl\xedn Oriental","La que se qued\xf3","Permanece en el Oeste",100,3.7)
-B.QL=new A.bc("otto_01","shared","Humboldt Forum",52.5185,13.4021)
-B.Qw=new A.bc("otto_02","shared","Alexanderplatz",52.5219,13.4132)
-B.Qd=new A.bc("otto_03","shared","Fernsehturm",52.5208,13.4094)
-B.QA=new A.bc("otto_04","shared","Marx-Engels-Forum",52.5188,13.4044)
-B.Qf=new A.bc("otto_05","shared","Rotes Rathaus",52.5175,13.4083)
-B.Qh=new A.bc("otto_06","shared","Nikolaiviertel",52.5161,13.4068)
-B.Qs=new A.bc("otto_07a","A","Tr\xe4nenpalast",52.521,13.3872)
-B.Qp=new A.bc("otto_08a","A","Memorial Muro Bernauer Str.",52.5351,13.3902)
-B.QG=new A.bc("otto_09a","A","Mauerpark",52.5427,13.4027)
-B.Qr=new A.bc("otto_07b","B","Tr\xe4nenpalast",52.521,13.3872)
-B.Qe=new A.bc("otto_08b","B","Alexanderplatz (noche)",52.5219,13.4132)
-B.Qm=new A.bc("otto_09b","B","Friedrichstadtpalast",52.5237,13.3876)
-B.HB=A.b(s([B.QL,B.Qw,B.Qd,B.QA,B.Qf,B.Qh,B.Qs,B.Qp,B.QG,B.Qr,B.Qe,B.Qm]),t.SY)
-B.zr=new A.v_("otto","Otto Fischer","\ud83d\udcc4","Funcionario del Estado \xb7 Berl\xedn 9N 1989","Berl\xedn Oriental, 9 de noviembre de 1989. Otto es un funcionario del Ministerio de Informaci\xf3n. Esa tarde tiene que leer un decreto en una rueda de prensa. No lo ha le\xeddo bien. Lo que pase en las pr\xf3ximas horas cambiar\xe1 la historia de Berl\xedn.","East Berlin, 9 November 1989. Otto is a Ministry of Information official. That afternoon he has to read a decree at a press conference. He has not read it carefully enough. What happens in the next few hours will change the history of Berlin.","Ost-Berlin, 9. November 1989. Otto ist Beamter im Ministerium f\xfcr Information. An diesem Nachmittag muss er auf einer Pressekonferenz ein Dekret verlesen. Er hat es nicht sorgf\xe4ltig genug gelesen. Was in den n\xe4chsten Stunden passiert, wird die Geschichte Berlins ver\xe4ndern.","Berlino Est, 9 novembre 1989. Otto \xe8 un funzionario del Ministero dell'Informazione. Nel pomeriggio deve leggere un decreto in una conferenza stampa. Non l'ha letto con abbastanza attenzione. Quello che accadr\xe0 nelle prossime ore cambier\xe0 la storia di Berlino.","https://pub-b20ae9c7d6c140aa868ea5aba6210b5f.r2.dev/audios/sorpresa/berlin/otto/v1/",B.HB,"El que fue al Muro","Va a ver lo que provoc\xf3","El que se qued\xf3","Observa desde la distancia",95,3.8)
+B.I2=A.b(s([B.Qq,B.QD,B.Q4,B.Ql,B.QG,B.Qs,B.QH,B.Qz,B.QC,B.Qk,B.Qc,B.QJ]),t.SY)
+B.zr=new A.v_("clara","Clara","\ud83c\udfb8","Punk del Oeste \xb7 Berl\xedn 1983","Berl\xedn Occidental, 1983. Clara tiene diecinueve a\xf1os, una guitarra y demasiadas preguntas sobre el Muro. Un d\xeda decide cruzar al otro lado. Lo que encuentra ah\xed no es lo que esperaba.","West Berlin, 1983. Clara is nineteen, has a guitar and too many questions about the Wall. One day she decides to cross to the other side. What she finds there is not what she expected.","West-Berlin, 1983. Clara ist neunzehn, hat eine Gitarre und zu viele Fragen \xfcber die Mauer. Eines Tages beschlie\xdft sie, auf die andere Seite zu gehen. Was sie dort findet, \xfcberrascht sie.","Berlino Ovest, 1983. Clara ha diciannove anni, una chitarra e troppe domande sul Muro. Un giorno decide di attraversare dall'altra parte. Quello che trova l\xec non \xe8 quello che si aspettava.","https://pub-b20ae9c7d6c140aa868ea5aba6210b5f.r2.dev/audios/sorpresa/berlin/clara/v1/",B.I2,"La que cruz\xf3","Pasa al Berl\xedn Oriental","La que se qued\xf3","Permanece en el Oeste",100,3.7)
 B.Qu=new A.bc("lena_01","shared","Nueva Sinagoga",52.5249,13.3942)
-B.Ql=new A.bc("lena_02","shared","Monbijoupark",52.5231,13.3963)
-B.Qo=new A.bc("lena_03","shared","Bode Museum",52.5212,13.3969)
-B.Qg=new A.bc("lena_04","shared","Berliner Dom",52.519,13.4014)
+B.Qm=new A.bc("lena_02","shared","Monbijoupark",52.5231,13.3963)
+B.Qr=new A.bc("lena_03","shared","Bode Museum",52.5212,13.3969)
+B.Qi=new A.bc("lena_04","shared","Berliner Dom",52.519,13.4014)
 B.QI=new A.bc("lena_05","shared","Staatsoper / Bebelplatz",52.5168,13.3933)
-B.Q6=new A.bc("lena_06","shared","Neue Wache",52.5175,13.3971)
+B.Q7=new A.bc("lena_06","shared","Neue Wache",52.5175,13.3971)
 B.QB=new A.bc("lena_07a","A","Memorial del Holocausto",52.5138,13.3788)
 B.Qt=new A.bc("lena_08a","A","Puerta de Brandenburgo",52.5163,13.3777)
-B.Q2=new A.bc("lena_09a","A","Columna de la Victoria",52.5145,13.3501)
-B.Qa=new A.bc("lena_07b","B","Lustgarten",52.519,13.4014)
-B.Qc=new A.bc("lena_08b","B","Neues Museum (Nefertiti)",52.5206,13.3979)
-B.Q7=new A.bc("lena_09b","B","Pergamon Panorama",52.5211,13.3963)
-B.I5=A.b(s([B.Qu,B.Ql,B.Qo,B.Qg,B.QI,B.Q6,B.QB,B.Qt,B.Q2,B.Qa,B.Qc,B.Q7]),t.SY)
+B.Q3=new A.bc("lena_09a","A","Columna de la Victoria",52.5145,13.3501)
+B.Qd=new A.bc("lena_07b","B","Lustgarten",52.519,13.4014)
+B.Qf=new A.bc("lena_08b","B","Neues Museum (Nefertiti)",52.5206,13.3979)
+B.Q8=new A.bc("lena_09b","B","Pergamon Panorama",52.5211,13.3963)
+B.I5=A.b(s([B.Qu,B.Qm,B.Qr,B.Qi,B.QI,B.Q7,B.QB,B.Qt,B.Q3,B.Qd,B.Qf,B.Q8]),t.SY)
 B.zs=new A.v_("lena","Lena Hoffmann","\ud83d\udc83","Cantante de cabaret \xb7 Berl\xedn 1925\u20131933","Berl\xedn, 1925. Lena tiene veintid\xf3s a\xf1os y canta en el Silhouetten, el cabaret de la Friedrichstrasse. En 1933 llega una bifurcaci\xf3n que cambiar\xe1 su vida: \xbfirse con Heinrich a Par\xeds o quedarse en la ciudad que la hizo?","Berlin, 1925. Lena is twenty-two and sings at the Silhouetten cabaret on Friedrichstrasse. In 1933 a crossroads arrives that will change everything: leave with Heinrich for Paris, or stay in the city that made her?","Berlin, 1925. Lena ist zweiundzwanzig und singt im Silhouetten-Kabarett in der Friedrichstra\xdfe. 1933 kommt eine Weggabelung: Mit Heinrich nach Paris gehen oder in der Stadt bleiben, die sie gepr\xe4gt hat?","Berlino, 1925. Lena ha ventidue anni e canta al Silhouetten, il cabaret della Friedrichstrasse. Nel 1933 arriva un bivio che cambier\xe0 tutto: partire con Heinrich per Parigi o restare nella citt\xe0 che l'ha formata?","https://pub-b20ae9c7d6c140aa868ea5aba6210b5f.r2.dev/audios/sorpresa/berlin/lena/v4/",B.I5,"La que escap\xf3","Parte con Heinrich a Par\xeds","La que se qued\xf3","Se queda en Berl\xedn",123,5.2)
 B.d0=new A.OZ(null)
 B.f7=new A.Cu(null,null,null,null,!1)
