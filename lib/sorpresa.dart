@@ -1,3 +1,4 @@
+// v2 — Lena, Klaus, Clara, Otto — sin Rex
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:geolocator/geolocator.dart';
