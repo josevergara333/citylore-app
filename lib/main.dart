@@ -28,9 +28,8 @@ class CityLoreApp extends StatelessWidget {
 class City {
   final String id, name, flag, description;
   final bool available;
-  final String? descKey; // clave en kT para descripción traducible
   const City({required this.id, required this.name, required this.flag,
-    required this.description, this.available = true, this.descKey});
+    required this.description, this.available = true});
 }
 
 class Place {
@@ -113,84 +112,64 @@ Future<String?> fetchWikipediaPhoto(String articleName) async {
 // ── TRADUCCIONES UI ───────────────────────────────────────────
 const kT = {
   'es': {
-    'choose_city':        'Elige tu destino',
-    'surprise':           '✨  Modo Sorpréndeme',
-    'tours':              '🗺  Tours Temáticos',
-    'soon':               'Pronto',
-    'search':             'Buscar lugar...',
-    'place':              'Lugar',
-    'historic_photo':     'Foto histórica',
-    'no_photo':           'Foto no disponible',
-    'error_load':         'Error al cargar datos',
-    'retry':              'Reintentar',
-    'no_results':         'No se encontraron lugares',
-    'no_text':            'Texto no disponible en este idioma.',
-    'see_map':            'Ver mapa',
-    'capa_historia':      '🏛 Historia',
-    'capa_arquitectura':  '🏗 Arquitectura',
-    'capa_arte':          '🎨 Arte',
-    'capa_curiosidades':  '🤩 Curiosidades',
-    'berlin_desc':        '30 lugares · 120 audios',
+    'choose_city':   'Elige tu destino',
+    'surprise':      '✨  Modo Sorpréndeme',
+    'tours':         '🗺  Tours Temáticos',
+    'soon':          'Pronto',
+    'search':        'Buscar lugar...',
+    'place':         'Lugar',
+    'historic_photo':'Foto histórica',
+    'no_photo':      'Foto no disponible',
+    'error_load':    'Error al cargar datos',
+    'retry':         'Reintentar',
+    'no_results':    'No se encontraron lugares',
+    'no_text':       'Texto no disponible en este idioma.',
+    'see_map':       'Ver mapa',
   },
   'en': {
-    'choose_city':        'Choose your destination',
-    'surprise':           '✨  Surprise Me',
-    'tours':              '🗺  Thematic Tours',
-    'soon':               'Soon',
-    'search':             'Search place...',
-    'place':              'Place',
-    'historic_photo':     'Historic photo',
-    'no_photo':           'Photo not available',
-    'error_load':         'Error loading data',
-    'retry':              'Retry',
-    'no_results':         'No places found',
-    'no_text':            'Text not available in this language.',
-    'see_map':            'View map',
-    'capa_historia':      '🏛 History',
-    'capa_arquitectura':  '🏗 Architecture',
-    'capa_arte':          '🎨 Art',
-    'capa_curiosidades':  '🤩 Curiosities',
-    'berlin_desc':        '30 places · 120 audios',
+    'choose_city':   'Choose your destination',
+    'surprise':      '✨  Surprise Me',
+    'tours':         '🗺  Thematic Tours',
+    'soon':          'Soon',
+    'search':        'Search place...',
+    'place':         'Place',
+    'historic_photo':'Historic photo',
+    'no_photo':      'Photo not available',
+    'error_load':    'Error loading data',
+    'retry':         'Retry',
+    'no_results':    'No places found',
+    'no_text':       'Text not available in this language.',
+    'see_map':       'View map',
   },
   'de': {
-    'choose_city':        'Wähle dein Ziel',
-    'surprise':           '✨  Überrasch mich',
-    'tours':              '🗺  Thematische Touren',
-    'soon':               'Bald',
-    'search':             'Ort suchen...',
-    'place':              'Ort',
-    'historic_photo':     'Historisches Foto',
-    'no_photo':           'Foto nicht verfügbar',
-    'error_load':         'Fehler beim Laden',
-    'retry':              'Erneut versuchen',
-    'no_results':         'Keine Orte gefunden',
-    'no_text':            'Text in dieser Sprache nicht verfügbar.',
-    'see_map':            'Karte anzeigen',
-    'capa_historia':      '🏛 Geschichte',
-    'capa_arquitectura':  '🏗 Architektur',
-    'capa_arte':          '🎨 Kunst',
-    'capa_curiosidades':  '🤩 Kuriositäten',
-    'berlin_desc':        '30 Orte · 120 Audios',
+    'choose_city':   'Wähle dein Ziel',
+    'surprise':      '✨  Überrasch mich',
+    'tours':         '🗺  Thematische Touren',
+    'soon':          'Bald',
+    'search':        'Ort suchen...',
+    'place':         'Ort',
+    'historic_photo':'Historisches Foto',
+    'no_photo':      'Foto nicht verfügbar',
+    'error_load':    'Fehler beim Laden',
+    'retry':         'Erneut versuchen',
+    'no_results':    'Keine Orte gefunden',
+    'no_text':       'Text in dieser Sprache nicht verfügbar.',
+    'see_map':       'Karte anzeigen',
   },
   'it': {
-    'choose_city':        'Scegli la tua destinazione',
-    'surprise':           '✨  Sorprendimi',
-    'tours':              '🗺  Tour Tematici',
-    'soon':               'Presto',
-    'search':             'Cerca luogo...',
-    'place':              'Luogo',
-    'historic_photo':     'Foto storica',
-    'no_photo':           'Foto non disponibile',
-    'error_load':         'Errore nel caricamento',
-    'retry':              'Riprova',
-    'no_results':         'Nessun luogo trovato',
-    'no_text':            'Testo non disponibile in questa lingua.',
-    'see_map':            'Vedi mappa',
-    'capa_historia':      '🏛 Storia',
-    'capa_arquitectura':  '🏗 Architettura',
-    'capa_arte':          '🎨 Arte',
-    'capa_curiosidades':  '🤩 Curiosità',
-    'berlin_desc':        '30 luoghi · 120 audio',
+    'choose_city':   'Scegli la tua destinazione',
+    'surprise':      '✨  Sorprendimi',
+    'tours':         '🗺  Tour Tematici',
+    'soon':          'Presto',
+    'search':        'Cerca luogo...',
+    'place':         'Luogo',
+    'historic_photo':'Foto storica',
+    'no_photo':      'Foto non disponibile',
+    'error_load':    'Errore nel caricamento',
+    'retry':         'Riprova',
+    'no_results':    'Nessun luogo trovato',
+    'no_text':       'Testo non disponibile in questa lingua.',
+    'see_map':       'Vedi mappa',
   },
 };
 
@@ -198,7 +177,7 @@ String t(String lang, String key) => kT[lang]?[key] ?? kT['es']![key] ?? key;
 
 // ── CIUDADES ─────────────────────────────────────────────────
 const List<City> kCities = [
-  City(id: 'Berlin',      name: 'Berlín',      flag: '🇩🇪', description: '30 lugares · 120 audios', descKey: 'berlin_desc'),
+  City(id: 'Berlin',      name: 'Berlín',      flag: '🇩🇪', description: '30 lugares · 120 audios'),
   City(id: 'Paris',       name: 'París',        flag: '🇫🇷', description: 'Próximamente', available: false),
   City(id: 'Roma',        name: 'Roma',         flag: '🇮🇹', description: 'Próximamente', available: false),
   City(id: 'Tokyo',       name: 'Tokyo',        flag: '🇯🇵', description: 'Próximamente', available: false),
@@ -373,10 +352,7 @@ class _CityCardState extends State<_CityCard> {
                     fontSize: 15, fontWeight: FontWeight.w600,
                     color: ok ? kText : kMuted)),
             const SizedBox(height: 2),
-            Text(
-                widget.city.descKey != null
-                    ? t(widget.lang, widget.city.descKey!)
-                    : t(widget.lang, 'soon'),
+            Text(widget.city.description,
                 style: const TextStyle(fontSize: 12, color: kMuted)),
           ])),
           if (ok) const Icon(Icons.chevron_right, color: kGold, size: 20)
@@ -579,12 +555,11 @@ class _PlayerScreenState extends State<PlayerScreen> {
   bool _loadingPhoto = true;
 
   final _capas = ['historia','arquitectura','arte','curiosidades'];
-
-  Map<String, String> get _capaLabels => {
-    'historia':     t(_lang, 'capa_historia'),
-    'arquitectura': t(_lang, 'capa_arquitectura'),
-    'arte':         t(_lang, 'capa_arte'),
-    'curiosidades': t(_lang, 'capa_curiosidades'),
+  final _capaLabels = {
+    'historia':     '🏛 Historia',
+    'arquitectura': '🏗 Arquitectura',
+    'arte':         '🎨 Arte',
+    'curiosidades': '🤩 Curiosidades',
   };
 
   @override
