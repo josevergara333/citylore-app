@@ -7923,7 +7923,7 @@ avZ(){var s=0,r=A.u(t.hB),q,p=2,o=[],n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1
 var $async$avZ=A.v(function(a2,a3){if(a2===1){o.push(a3)
 s=p}while(true)switch(s){case 0:p=4
 s=7
-return A.l(A.awb(A.dW("https://docs.google.com/spreadsheets/d//gviz/tq?tqx=out:json&sheet=Modo_Sorpresa")),$async$avZ)
+return A.l(A.awb(A.dW("https://docs.google.com/spreadsheets/d/1K1iMpmKiYMC3A05V9byG1duokRJK-2eYMQKti_wc2Fg/gviz/tq?tqx=out:json&sheet=Modo_Sorpresa")),$async$avZ)
 case 7:n=a3
 if(n.b!==200){q=A.y(t.N,t.GU)
 s=1
