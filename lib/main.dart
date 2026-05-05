@@ -39,19 +39,81 @@ class Place {
   final Map<String, Map<String, String>> textos;
   final Map<String, String> audios;
   final String wikipediaEN;
+  final Map<String, String> gastronomia;
+  final Map<String, String> cineLiteratura;
+  final Map<String, String> mitologiaReligion;
 
-  const Place({required this.ciudad, required this.id, required this.nombres,
+  const Place({
+    required this.ciudad, required this.id, required this.nombres,
     required this.barrio, required this.epoca, required this.lat,
     required this.lng, required this.textos, required this.audios,
-    required this.wikipediaEN});
+    required this.wikipediaEN,
+    this.gastronomia = const {},
+    this.cineLiteratura = const {},
+    this.mitologiaReligion = const {},
+  });
 
-  String nombre(String lang) =>
-      (nombres[lang]?.isNotEmpty == true) ? nombres[lang]! : nombres['es'] ?? id;
+  // Para París, el FR está en la columna DE (nombre, textos base)
+  String nombre(String lang) {
+    final effectiveLang = (lang == 'fr' && ciudad == 'Paris') ? 'de' : lang;
+    return (nombres[effectiveLang]?.isNotEmpty == true)
+        ? nombres[effectiveLang]!
+        : nombres['es'] ?? id;
+  }
+
+  // Devuelve el texto de una capa para el idioma dado,
+  // manejando el mapeo FR→DE para París en las capas base
+  String textoParaCapa(String capa, String lang) {
+    if (capa == 'gastronomia') {
+      return gastronomia[lang] ?? gastronomia['es'] ?? '';
+    }
+    if (capa == 'cine_literatura') {
+      return cineLiteratura[lang] ?? cineLiteratura['es'] ?? '';
+    }
+    if (capa == 'mitologia_religion') {
+      return mitologiaReligion[lang] ?? mitologiaReligion['es'] ?? '';
+    }
+    // Capas base: para París FR está en columna DE
+    final effectiveLang = (lang == 'fr' && ciudad == 'Paris') ? 'de' : lang;
+    return textos[effectiveLang]?[capa] ?? textos['es']?[capa] ?? '';
+  }
+
+  // Capas disponibles: París y Roma añaden capas extra si tienen contenido
+  List<String> capasDisponibles() {
+    const base = ['historia', 'arquitectura', 'arte', 'curiosidades'];
+    if (ciudad == 'Paris') {
+      final extra = <String>[];
+      if (gastronomia.values.any((v) => v.isNotEmpty)) extra.add('gastronomia');
+      if (cineLiteratura.values.any((v) => v.isNotEmpty)) extra.add('cine_literatura');
+      return [...base, ...extra];
+    }
+    if (ciudad == 'Roma') {
+      final extra = <String>[];
+      if (cineLiteratura.values.any((v) => v.isNotEmpty)) extra.add('cine_literatura');
+      if (mitologiaReligion.values.any((v) => v.isNotEmpty)) extra.add('mitologia_religion');
+      return [...base, ...extra];
+    }
+    return base;
+  }
+
+  // Idiomas disponibles para el selector de idioma
+  List<String> idiomasDisponibles() =>
+      ciudad == 'Paris' ? ['es', 'en', 'fr'] : ['es', 'en', 'de', 'it'];
 }
 
 // ── GOOGLE SHEETS ─────────────────────────────────────────────
 const kSheetId = '1K1iMpmKiYMC3A05V9byG1duokRJK-2eYMQKti_wc2Fg';
 
+// Columnas Lugares:
+// A(0):Ciudad B(1):ID C(2):Nombre_ES D(3):Nombre_EN E(4):Nombre_DE/FR F(5):Nombre_IT
+// G(6):Barrio H(7):Epoca I(8):Lat J(9):Lng
+// K(10):Historia_ES L(11):Historia_EN M(12):Historia_DE/FR N(13):Historia_IT
+// O(14):Arq_ES P(15):Arq_EN Q(16):Arq_DE/FR R(17):Arq_IT
+// S(18):Arte_ES T(19):Arte_EN U(20):Arte_DE/FR V(21):Arte_IT
+// W(22):Curio_ES X(23):Curio_EN Y(24):Curio_DE/FR Z(25):Curio_IT
+// AA(26):Audio_ES AB(27):Audio_EN AC(28):Audio_DE AD(29):Audio_IT AE(30):Wikipedia_EN
+// AF(31):Gastro_ES AG(32):Gastro_EN AH(33):Gastro_FR [solo París]
+// AI(34):Cine_ES AJ(35):Cine_EN AK(36):Cine_FR [solo París]
 Future<List<Place>> fetchPlaces(String ciudad) async {
   final url = 'https://docs.google.com/spreadsheets/d/$kSheetId/gviz/tq?tqx=out:json&sheet=Lugares';
   final res = await http.get(Uri.parse(url));
@@ -88,6 +150,9 @@ Future<List<Place>> fetchPlaces(String ciudad) async {
         },
         audios: {'es': cell(26), 'en': cell(27), 'de': cell(28), 'it': cell(29)},
         wikipediaEN: cell(30),
+        gastronomia:       {'es': cell(31), 'en': cell(32), 'fr': cell(33)},
+        cineLiteratura:    {'es': cell(34), 'en': cell(35), 'fr': cell(36)},
+        mitologiaReligion: {'es': cell(37), 'en': cell(38), 'de': cell(39), 'it': cell(40)},
       );
       if (place.ciudad == ciudad) places.add(place);
     } catch (_) { continue; }
@@ -95,11 +160,15 @@ Future<List<Place>> fetchPlaces(String ciudad) async {
   return places;
 }
 
-Future<String?> fetchWikipediaPhoto(String articleName) async {
+// Intenta obtener la foto de un artículo de Wikipedia (EN o FR)
+Future<String?> _tryWikiPhoto(String lang, String articleName) async {
   if (articleName.isEmpty) return null;
   try {
-    final url = 'https://en.wikipedia.org/api/rest_v1/page/summary/$articleName';
-    final res = await http.get(Uri.parse(url));
+    final encoded = Uri.encodeComponent(articleName);
+    final base = lang == 'fr'
+        ? 'https://fr.wikipedia.org/api/rest_v1/page/summary/$encoded'
+        : 'https://en.wikipedia.org/api/rest_v1/page/summary/$encoded';
+    final res = await http.get(Uri.parse(base));
     if (res.statusCode != 200) return null;
     final data = json.decode(res.body);
     String? thumbUrl = data['originalimage']?['source'] as String?;
@@ -109,67 +178,139 @@ Future<String?> fetchWikipediaPhoto(String articleName) async {
   } catch (_) { return null; }
 }
 
+// Busca la foto probando: 1) campo wikipediaEN del sheet,
+// 2) nombre EN del lugar, 3) nombre FR del lugar en Wikipedia FR
+Future<String?> fetchWikipediaPhoto(String articleName,
+    {String nameEN = '', String nameFR = ''}) async {
+  // 1. Campo explícito del sheet
+  if (articleName.isNotEmpty) {
+    final url = await _tryWikiPhoto('en', articleName);
+    if (url != null) return url;
+  }
+  // 2. Nombre EN del lugar en Wikipedia EN
+  if (nameEN.isNotEmpty) {
+    final url = await _tryWikiPhoto('en', nameEN);
+    if (url != null) return url;
+  }
+  // 3. Nombre FR en Wikipedia FR (para París)
+  if (nameFR.isNotEmpty) {
+    final url = await _tryWikiPhoto('fr', nameFR);
+    if (url != null) return url;
+  }
+  return null;
+}
+
 // ── TRADUCCIONES UI ───────────────────────────────────────────
 const kT = {
   'es': {
-    'choose_city':   'Elige tu destino',
-    'surprise':      '✨  Modo Sorpréndeme',
-    'tours':         '🗺  Tours Temáticos',
-    'soon':          'Pronto',
-    'search':        'Buscar lugar...',
-    'place':         'Lugar',
-    'historic_photo':'Foto histórica',
-    'no_photo':      'Foto no disponible',
-    'error_load':    'Error al cargar datos',
-    'retry':         'Reintentar',
-    'no_results':    'No se encontraron lugares',
-    'no_text':       'Texto no disponible en este idioma.',
-    'see_map':       'Ver mapa',
+    'choose_city':           'Elige tu destino',
+    'surprise':              '✨  Modo Sorpréndeme',
+    'tours':                 '🗺  Tours Temáticos',
+    'soon':                  'Pronto',
+    'search':                'Buscar lugar...',
+    'place':                 'Lugar',
+    'historic_photo':        'Foto histórica',
+    'no_photo':              'Foto no disponible',
+    'error_load':            'Error al cargar datos',
+    'retry':                 'Reintentar',
+    'no_results':            'No se encontraron lugares',
+    'no_text':               'Texto no disponible en este idioma.',
+    'see_map':               'Ver mapa',
+    'capa_historia':         '🏛 Historia',
+    'capa_arquitectura':     '🏗 Arquitectura',
+    'capa_arte':             '🎨 Arte',
+    'capa_curiosidades':     '🤩 Curiosidades',
+    'capa_gastronomia':      '🍽 Gastronomía',
+    'capa_cine_literatura':    '🎬 Cine & Literatura',
+    'capa_mitologia_religion': '⚡ Mitología & Religión',
   },
   'en': {
-    'choose_city':   'Choose your destination',
-    'surprise':      '✨  Surprise Me',
-    'tours':         '🗺  Thematic Tours',
-    'soon':          'Soon',
-    'search':        'Search place...',
-    'place':         'Place',
-    'historic_photo':'Historic photo',
-    'no_photo':      'Photo not available',
-    'error_load':    'Error loading data',
-    'retry':         'Retry',
-    'no_results':    'No places found',
-    'no_text':       'Text not available in this language.',
-    'see_map':       'View map',
+    'choose_city':           'Choose your destination',
+    'surprise':              '✨  Surprise Me',
+    'tours':                 '🗺  Thematic Tours',
+    'soon':                  'Soon',
+    'search':                'Search place...',
+    'place':                 'Place',
+    'historic_photo':        'Historic photo',
+    'no_photo':              'Photo not available',
+    'error_load':            'Error loading data',
+    'retry':                 'Retry',
+    'no_results':            'No places found',
+    'no_text':               'Text not available in this language.',
+    'see_map':               'View map',
+    'capa_historia':         '🏛 History',
+    'capa_arquitectura':     '🏗 Architecture',
+    'capa_arte':             '🎨 Art',
+    'capa_curiosidades':     '🤩 Curiosities',
+    'capa_gastronomia':      '🍽 Gastronomy',
+    'capa_cine_literatura':    '🎬 Cinema & Literature',
+    'capa_mitologia_religion': '⚡ Mythology & Religion',
   },
   'de': {
-    'choose_city':   'Wähle dein Ziel',
-    'surprise':      '✨  Überrasch mich',
-    'tours':         '🗺  Thematische Touren',
-    'soon':          'Bald',
-    'search':        'Ort suchen...',
-    'place':         'Ort',
-    'historic_photo':'Historisches Foto',
-    'no_photo':      'Foto nicht verfügbar',
-    'error_load':    'Fehler beim Laden',
-    'retry':         'Erneut versuchen',
-    'no_results':    'Keine Orte gefunden',
-    'no_text':       'Text in dieser Sprache nicht verfügbar.',
-    'see_map':       'Karte anzeigen',
+    'choose_city':           'Wähle dein Ziel',
+    'surprise':              '✨  Überrasch mich',
+    'tours':                 '🗺  Thematische Touren',
+    'soon':                  'Bald',
+    'search':                'Ort suchen...',
+    'place':                 'Ort',
+    'historic_photo':        'Historisches Foto',
+    'no_photo':              'Foto nicht verfügbar',
+    'error_load':            'Fehler beim Laden',
+    'retry':                 'Erneut versuchen',
+    'no_results':            'Keine Orte gefunden',
+    'no_text':               'Text in dieser Sprache nicht verfügbar.',
+    'see_map':               'Karte anzeigen',
+    'capa_historia':         '🏛 Geschichte',
+    'capa_arquitectura':     '🏗 Architektur',
+    'capa_arte':             '🎨 Kunst',
+    'capa_curiosidades':     '🤩 Kuriositäten',
+    'capa_gastronomia':      '🍽 Gastronomie',
+    'capa_cine_literatura':    '🎬 Kino & Literatur',
+    'capa_mitologia_religion': '⚡ Mythologie & Religion',
   },
   'it': {
-    'choose_city':   'Scegli la tua destinazione',
-    'surprise':      '✨  Sorprendimi',
-    'tours':         '🗺  Tour Tematici',
-    'soon':          'Presto',
-    'search':        'Cerca luogo...',
-    'place':         'Luogo',
-    'historic_photo':'Foto storica',
-    'no_photo':      'Foto non disponibile',
-    'error_load':    'Errore nel caricamento',
-    'retry':         'Riprova',
-    'no_results':    'Nessun luogo trovato',
-    'no_text':       'Testo non disponibile in questa lingua.',
-    'see_map':       'Vedi mappa',
+    'choose_city':           'Scegli la tua destinazione',
+    'surprise':              '✨  Sorprendimi',
+    'tours':                 '🗺  Tour Tematici',
+    'soon':                  'Presto',
+    'search':                'Cerca luogo...',
+    'place':                 'Luogo',
+    'historic_photo':        'Foto storica',
+    'no_photo':              'Foto non disponibile',
+    'error_load':            'Errore nel caricamento',
+    'retry':                 'Riprova',
+    'no_results':            'Nessun luogo trovato',
+    'no_text':               'Testo non disponibile in questa lingua.',
+    'see_map':               'Vedi mappa',
+    'capa_historia':         '🏛 Storia',
+    'capa_arquitectura':     '🏗 Architettura',
+    'capa_arte':             '🎨 Arte',
+    'capa_curiosidades':     '🤩 Curiosità',
+    'capa_gastronomia':      '🍽 Gastronomia',
+    'capa_cine_literatura':    '🎬 Cinema & Letteratura',
+    'capa_mitologia_religion': '⚡ Mitologia & Religione',
+  },
+  'fr': {
+    'choose_city':           'Choisissez votre destination',
+    'surprise':              '✨  Surprenez-moi',
+    'tours':                 '🗺  Visites Thématiques',
+    'soon':                  'Bientôt',
+    'search':                'Rechercher un lieu...',
+    'place':                 'Lieu',
+    'historic_photo':        'Photo historique',
+    'no_photo':              'Photo non disponible',
+    'error_load':            'Erreur de chargement',
+    'retry':                 'Réessayer',
+    'no_results':            'Aucun lieu trouvé',
+    'no_text':               'Texte non disponible dans cette langue.',
+    'see_map':               'Voir la carte',
+    'capa_historia':         '🏛 Histoire',
+    'capa_arquitectura':     '🏗 Architecture',
+    'capa_arte':             '🎨 Art',
+    'capa_curiosidades':     '🤩 Curiosités',
+    'capa_gastronomia':      '🍽 Gastronomie',
+    'capa_cine_literatura':    '🎬 Cinéma & Littérature',
+    'capa_mitologia_religion': '⚡ Mythologie & Religion',
   },
 };
 
@@ -177,9 +318,9 @@ String t(String lang, String key) => kT[lang]?[key] ?? kT['es']![key] ?? key;
 
 // ── CIUDADES ─────────────────────────────────────────────────
 const List<City> kCities = [
-  City(id: 'Berlin',      name: 'Berlín',      flag: '🇩🇪', description: '30 lugares · 120 audios'),
-  City(id: 'Paris',       name: 'París',        flag: '🇫🇷', description: 'Próximamente', available: false),
-  City(id: 'Roma',        name: 'Roma',         flag: '🇮🇹', description: 'Próximamente', available: false),
+  City(id: 'Berlin', name: 'Berlín', flag: '🇩🇪', description: '30 lugares · 120 audios'),
+  City(id: 'Paris',  name: 'París',  flag: '🇫🇷', description: '30 lugares · Tours temáticos'),
+  City(id: 'Roma',        name: 'Roma',         flag: '🇮🇹', description: 'La Ciudad Eterna', available: true),
   City(id: 'Tokyo',       name: 'Tokyo',        flag: '🇯🇵', description: 'Próximamente', available: false),
   City(id: 'NewYork',     name: 'Nueva York',   flag: '🇺🇸', description: 'Próximamente', available: false),
   City(id: 'Barcelona',   name: 'Barcelona',    flag: '🇪🇸', description: 'Próximamente', available: false),
@@ -274,45 +415,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
             itemBuilder: (ctx, i) => _CityCard(city: kCities[i], lang: _lang),
           )),
 
-          // ── TOURS TEMÁTICOS ──
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-            child: GestureDetector(
-              onTap: () => Navigator.push(context, MaterialPageRoute(
-                  builder: (_) => ToursScreen(lang: _lang))),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                decoration: BoxDecoration(
-                    color: kSurface,
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: kBorder)),
-                child: Center(child: Text(t(_lang, 'tours'),
-                    style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w600, color: kText))),
-              ),
-            ),
-          ),
-
-          // ── MODO SORPRÉNDEME ──
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-            child: GestureDetector(
-              onTap: () => Navigator.push(context, MaterialPageRoute(
-                  builder: (_) => SorpresaScreen(lang: _lang))),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                decoration: BoxDecoration(
-                    color: kGold.withOpacity(0.08),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: kGold)),
-                child: Center(child: Text(t(_lang, 'surprise'),
-                    style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w600, color: kGold))),
-              ),
-            ),
-          ),
+          const SizedBox(height: 16),
         ])),
       ),
     );
@@ -383,8 +486,18 @@ class _PlacesScreenState extends State<PlacesScreen> {
   List<Place> _all = [], _filtered = [];
   bool _loading = true; String? _error;
 
+  bool get _isParis => widget.city.id == 'Paris';
+  List<String> get _availableLangs => _isParis ? ['es', 'en', 'fr'] : ['es', 'en', 'de', 'it'];
+  String get _cityLabel => _isParis ? 'París' : widget.city.id;
+
   @override
-  void initState() { super.initState(); _lang = widget.lang; _load(); }
+  void initState() {
+    super.initState();
+    _lang = widget.lang;
+    // Reset lang if not available for this city
+    if (_isParis && (_lang == 'de' || _lang == 'it')) _lang = 'es';
+    _load();
+  }
 
   Future<void> _load() async {
     try {
@@ -448,7 +561,8 @@ class _PlacesScreenState extends State<PlacesScreen> {
             Text('${widget.city.flag} ${widget.city.name}',
                 style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: kText)),
             const Spacer(),
-            langPill(_lang, (l) => setState(() { _lang = l; _filter(''); })),
+            langPill(_lang, (l) => setState(() { _lang = l; _filter(''); }),
+                langs: _availableLangs),
           ]),
         ),
         Container(
@@ -472,6 +586,41 @@ class _PlacesScreenState extends State<PlacesScreen> {
             ),
           ),
         ),
+        // ── TOURS + SORPRESA ──
+        Container(
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+          color: kSurface,
+          child: Row(children: [
+            Expanded(child: GestureDetector(
+              onTap: () => Navigator.push(context, MaterialPageRoute(
+                  builder: (_) => ToursScreen(lang: _lang, initialCity: _cityLabel))),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 11),
+                decoration: BoxDecoration(
+                    color: kSurface2,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: kBorder)),
+                child: Center(child: Text(t(_lang, 'tours'),
+                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: kText))),
+              ),
+            )),
+            const SizedBox(width: 10),
+            Expanded(child: GestureDetector(
+              onTap: () => Navigator.push(context, MaterialPageRoute(
+                  builder: (_) => SorpresaScreen(lang: _lang, initialCity: _cityLabel))),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 11),
+                decoration: BoxDecoration(
+                    color: kGold.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: kGold)),
+                child: Center(child: Text(t(_lang, 'surprise'),
+                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: kGold))),
+              ),
+            )),
+          ]),
+        ),
+
         Expanded(child: _loading
             ? const Center(child: CircularProgressIndicator(color: kGold))
             : _error != null
@@ -554,18 +703,21 @@ class _PlayerScreenState extends State<PlayerScreen> {
   String? _photoUrl;
   bool _loadingPhoto = true;
 
-  final _capas = ['historia','arquitectura','arte','curiosidades'];
-  final _capaLabels = {
-    'historia':     '🏛 Historia',
-    'arquitectura': '🏗 Arquitectura',
-    'arte':         '🎨 Arte',
-    'curiosidades': '🤩 Curiosidades',
-  };
+  // Capas disponibles según ciudad (Paris añade gastronomia y cine_literatura)
+  List<String> get _capas => widget.place.capasDisponibles();
+
+  // Para Paris, FR lee de la columna DE en las capas base; gastronomia/cine usan FR real
+  String get _effectiveLang {
+    if (_lang == 'fr' && widget.place.ciudad == 'Paris') return 'de';
+    return _lang;
+  }
 
   @override
   void initState() {
     super.initState();
     _lang = widget.lang;
+    // Reset lang si no está disponible para esta ciudad
+    if (widget.place.ciudad == 'Paris' && (_lang == 'de' || _lang == 'it')) _lang = 'es';
     _player = AudioPlayer();
     _player.positionStream.listen((p) { if (mounted) setState(() => _pos = p); });
     _player.durationStream.listen((d) {
@@ -588,12 +740,21 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
   Future<void> _loadPhoto() async {
     setState(() => _loadingPhoto = true);
-    final url = await fetchWikipediaPhoto(widget.place.wikipediaEN);
+    // Para París: nombre en FR está en la columna DE del modelo
+    final nameFR = widget.place.ciudad == 'Paris'
+        ? (widget.place.nombres['de'] ?? '')
+        : '';
+    final url = await fetchWikipediaPhoto(
+      widget.place.wikipediaEN,
+      nameEN: widget.place.nombres['en'] ?? '',
+      nameFR: nameFR,
+    );
     if (mounted) setState(() { _photoUrl = url; _loadingPhoto = false; });
   }
 
   Future<void> _loadAudio() async {
-    final baseUrl = widget.place.audios[_lang] ?? '';
+    // Para Paris FR, usa el audio DE (misma columna); audios Paris aún pendientes
+    final baseUrl = widget.place.audios[_effectiveLang] ?? '';
     if (baseUrl.isEmpty) return;
     final url = baseUrl.replaceAll('_historia.mp3', '_$_capa.mp3');
     try {
@@ -603,8 +764,16 @@ class _PlayerScreenState extends State<PlayerScreen> {
     } catch (_) {}
   }
 
-  void _selectCapa(String capa) { setState(() => _capa = capa); _loadAudio(); }
-  void _selectLang(String lang) { setState(() => _lang = lang); _loadAudio(); }
+  void _selectCapa(String capa) {
+    setState(() => _capa = capa);
+    _loadAudio();
+  }
+
+  void _selectLang(String lang) {
+    setState(() => _lang = lang);
+    _loadAudio();
+  }
+
   Future<void> _togglePlay() async {
     if (_playing) { await _player.pause(); } else { await _player.play(); }
   }
@@ -613,9 +782,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final texto = widget.place.textos[_lang]?[_capa] ?? '';
+    final texto = widget.place.textoParaCapa(_capa, _lang);
     final progress = _dur.inMilliseconds > 0
         ? (_pos.inMilliseconds / _dur.inMilliseconds).clamp(0.0, 1.0) : 0.0;
+    final availableLangs = widget.place.idiomasDisponibles();
 
     return Scaffold(
       backgroundColor: kBg,
@@ -636,7 +806,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     fontSize: 16, fontWeight: FontWeight.w600, color: kText),
                 overflow: TextOverflow.ellipsis)),
             const SizedBox(width: 8),
-            langPill(_lang, _selectLang),
+            langPill(_lang, _selectLang, langs: availableLangs),
           ]),
         ),
         Expanded(child: SingleChildScrollView(
@@ -656,6 +826,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     style: const TextStyle(fontSize: 12, color: kMuted)),
               ]),
             ),
+            // ── PESTAÑAS (dinámicas: 4 para Berlín, hasta 6 para París) ──
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
@@ -672,7 +843,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         color: active ? color.withOpacity(0.15) : Colors.transparent,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: active ? color : kBorder)),
-                    child: Text(_capaLabels[c] ?? c,
+                    child: Text(t(_lang, 'capa_$c'),
                         style: TextStyle(
                             fontSize: 12,
                             color: active ? color : kMuted,
@@ -693,7 +864,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   Container(width: 8, height: 8,
                       decoration: BoxDecoration(color: _capaColor, shape: BoxShape.circle)),
                   const SizedBox(width: 8),
-                  Text((_capaLabels[_capa] ?? _capa).toUpperCase(),
+                  Text(t(_lang, 'capa_$_capa').toUpperCase(),
                       style: TextStyle(
                           fontSize: 10, color: _capaColor,
                           letterSpacing: 2, fontWeight: FontWeight.w600)),
@@ -751,7 +922,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                           color: _capaColor,
                           borderRadius: BorderRadius.circular(2))),
                   const SizedBox(width: 8),
-                  Text((_capaLabels[_capa] ?? _capa).toUpperCase(),
+                  Text(t(_lang, 'capa_$_capa').toUpperCase(),
                       style: TextStyle(
                           fontSize: 10, color: _capaColor,
                           letterSpacing: 2, fontWeight: FontWeight.w600)),

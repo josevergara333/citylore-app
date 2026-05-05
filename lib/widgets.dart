@@ -10,10 +10,12 @@ const kGoldLight = Color(0xFFe8c97a);
 const kText      = Color(0xFFe8e4dc);
 const kMuted     = Color(0xFF7a7890);
 const kCapaColors = {
-  'historia':     Color(0xFF4a7fa5),
-  'arquitectura': Color(0xFF7a5fa5),
-  'arte':         Color(0xFFa55f7a),
-  'curiosidades': Color(0xFF5fa57a),
+  'historia':        Color(0xFF4a7fa5),
+  'arquitectura':    Color(0xFF7a5fa5),
+  'arte':            Color(0xFFa55f7a),
+  'curiosidades':    Color(0xFF5fa57a),
+  'gastronomia':     Color(0xFFa5885f),
+  'cine_literatura': Color(0xFF5f8fa5),
 };
 
 // ── MODELO COMPARTIDO ─────────────────────────────────────────
@@ -28,7 +30,9 @@ class MapPlace {
 }
 
 // ── SELECTOR DE IDIOMA ────────────────────────────────────────
-Widget langPill(String current, void Function(String) onSelect) {
+// langs: lista de idiomas a mostrar. Si null, usa [es, en, de, it] (default Berlin)
+Widget langPill(String current, void Function(String) onSelect, {List<String>? langs}) {
+  final available = langs ?? ['es', 'en', 'de', 'it'];
   return Container(
     padding: const EdgeInsets.all(3),
     decoration: BoxDecoration(
@@ -37,7 +41,7 @@ Widget langPill(String current, void Function(String) onSelect) {
         border: Border.all(color: kBorder)),
     child: Row(
       mainAxisSize: MainAxisSize.min,
-      children: ['es', 'en', 'de', 'it'].map((l) {
+      children: available.map((l) {
         final active = current == l;
         return GestureDetector(
           onTap: () => onSelect(l),

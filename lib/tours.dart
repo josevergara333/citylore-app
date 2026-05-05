@@ -33,6 +33,9 @@ const kTT = {
     'km':           'km',
     'empty_title':  'Tours en producción',
     'empty_sub':    'Estamos preparando rutas increíbles. Vuelve pronto.',
+    'nearest':      'Más cercano',
+    'see_map':      'Ver mapa',
+    'see_list':     'Ver lista',
   },
   'en': {
     'title':        'Thematic Tours',
@@ -55,6 +58,9 @@ const kTT = {
     'km':           'km',
     'empty_title':  'Tours in production',
     'empty_sub':    'We are preparing amazing routes. Come back soon.',
+    'nearest':      'Nearest',
+    'see_map':      'See map',
+    'see_list':     'See list',
   },
   'de': {
     'title':        'Thematische Touren',
@@ -77,6 +83,9 @@ const kTT = {
     'km':           'km',
     'empty_title':  'Touren in Produktion',
     'empty_sub':    'Wir bereiten tolle Routen vor. Komm bald zurück.',
+    'nearest':      'Am nächsten',
+    'see_map':      'Karte ansehen',
+    'see_list':     'Liste ansehen',
   },
   'it': {
     'title':        'Tour Tematici',
@@ -99,6 +108,34 @@ const kTT = {
     'km':           'km',
     'empty_title':  'Tour in produzione',
     'empty_sub':    'Stiamo preparando percorsi incredibili. Torna presto.',
+    'nearest':      'Più vicino',
+    'see_map':      'Vedi mappa',
+    'see_list':     'Vedi lista',
+  },
+  'fr': {
+    'title':        'Visites Thématiques',
+    'subtitle':     'Paris par thèmes, à pied.',
+    'stops':        'arrêts',
+    'start':        'Commencer →',
+    'walk_to':      'Marchez vers',
+    'near_stop':    'Vous êtes ici !',
+    'next':         'Suivant →',
+    'next_stop':    'Arrêt suivant →',
+    'end_title':    'Visite terminée',
+    'end_sub':      'Merci d\'avoir exploré Paris.',
+    'back_home':    'Retour à l\'accueil',
+    'audio_soon':   'Audio bientôt',
+    'error_load':   'Erreur de chargement',
+    'retry':        'Réessayer',
+    'loading':      'Chargement des visites...',
+    'stop':         'Arrêt',
+    'min':          'min',
+    'km':           'km',
+    'empty_title':  'Visites en production',
+    'empty_sub':    'Nous préparons des itinéraires incroyables. Revenez bientôt.',
+    'nearest':      'Le plus proche',
+    'see_map':      'Voir la carte',
+    'see_list':     'Voir la liste',
   },
 };
 
@@ -115,6 +152,23 @@ const kTourMeta = {
   'arte':        {'emoji': '✏️', 'color': Color(0xFF5fa57a)},
   'musica':      {'emoji': '🎵', 'color': Color(0xFFa5955f)},
   'guerrafria':  {'emoji': '🧱', 'color': Color(0xFF8a7a5f)},
+  // París tipo keywords
+  'literario':   {'emoji': '📖', 'color': Color(0xFF5f7aa5)},
+  'historico':   {'emoji': '🏛',  'color': Color(0xFF4a7fa5)},
+  'religioso':   {'emoji': '⛪', 'color': Color(0xFF7a5fa5)},
+  'artistico':   {'emoji': '🎨', 'color': Color(0xFFa55f7a)},
+  'social':      {'emoji': '✊', 'color': Color(0xFFa5955f)},
+  'cientifico':  {'emoji': '🔬', 'color': Color(0xFF5fa57a)},
+  'arquitectura':       {'emoji': '🏗',  'color': Color(0xFF8a7a5f)},
+  // Roma tour tipos
+  'historia_antigua':   {'emoji': '🏛',  'color': Color(0xFF4a7fa5)},
+  'arte_museos':        {'emoji': '🎨', 'color': Color(0xFF7a5fa5)},
+  'poder_politica':     {'emoji': '⚔️', 'color': Color(0xFFa55f5f)},
+  'arqueologia':        {'emoji': '🪨', 'color': Color(0xFF8a7a5f)},
+  'religion_espiritualidad': {'emoji': '✝️', 'color': Color(0xFF5f7aa5)},
+  'gastronomia_cotidiana':   {'emoji': '🍝', 'color': Color(0xFFa5955f)},
+  'personajes_historicos':   {'emoji': '👑', 'color': Color(0xFF9a7a4a)},
+  'misterio_terror':    {'emoji': '👁️', 'color': Color(0xFF6a4a6a)},
 };
 
 Color tourColor(String tipo) {
@@ -158,6 +212,8 @@ class TourStop {
       case 'en': return textoEN.isNotEmpty ? textoEN : textoES;
       case 'de': return textoDE.isNotEmpty ? textoDE : textoES;
       case 'it': return textoIT.isNotEmpty ? textoIT : textoES;
+      // FR content is stored in the DE column for Paris rows
+      case 'fr': return textoDE.isNotEmpty ? textoDE : textoES;
       default:   return textoES;
     }
   }
@@ -189,15 +245,18 @@ class Tour {
 
   int get numParadas => contentStops.length;
 
-  // Nombre traducido usando kTourNames de sorpresa.dart
-  String nombreTraducido(String lang) => tourName(tipo, lang);
+  // Falls back to nombre (ES name from sheet) when tipo not in kTourNames (Paris tours)
+  String nombreTraducido(String lang) {
+    final kn = tourName(tipo, lang);
+    return kn == tipo ? nombre : kn;
+  }
 
   String introText(String lang) {
     final intro = introStop;
     if (intro == null) return '';
     final text = intro.texto(lang);
     final paragraphs = text.split('\n\n').where((p) => p.trim().isNotEmpty).toList();
-    return paragraphs.length > 1 ? paragraphs[1].trim() : paragraphs[0].trim();
+    return paragraphs.isNotEmpty ? paragraphs[0].trim() : '';
   }
 
   int get duracionMinutos {
@@ -236,6 +295,7 @@ class Tour {
 // Columnas: tour_id(0) ciudad(1) tour_nombre(2) tour_tipo(3) parada_num(4)
 //           lugar(5) lat(6) lng(7) texto_ES(8) texto_EN(9) texto_DE(10) texto_IT(11)
 //           audio_ES(12) audio_EN(13) fish_voice_ES(14) fish_voice_EN(15)
+// Nota París: col 10 (texto_DE) contiene texto en FRANCÉS
 const kSheetId = '1K1iMpmKiYMC3A05V9byG1duokRJK-2eYMQKti_wc2Fg';
 
 Future<List<Tour>> fetchTours(String ciudad) async {
@@ -305,7 +365,10 @@ Future<List<Tour>> fetchTours(String ciudad) async {
     );
   }).toList();
 
-  const order = ['miedo', 'romantico', 'clasico', 'museos', 'misterio', 'arte', 'musica', 'guerrafria'];
+  const order = ['miedo', 'romantico', 'clasico', 'museos', 'misterio', 'arte', 'musica', 'guerrafria',
+                  'literario', 'historico', 'religioso', 'artistico', 'social', 'cientifico', 'arquitectura',
+                  'historia_antigua', 'arte_museos', 'poder_politica', 'arqueologia',
+                  'religion_espiritualidad', 'gastronomia_cotidiana', 'personajes_historicos', 'misterio_terror'];
   tours.sort((a, b) {
     int rank(String tipo) {
       for (int i = 0; i < order.length; i++) {
@@ -340,10 +403,90 @@ double _haversine(double lat1, double lng1, double lat2, double lng2) {
   return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
 }
 
+// ── HELPER DISTANCIA ─────────────────────────────────────────
+String _fmtDist(double m) =>
+    m < 1000 ? '${m.round()}m' : '${(m / 1000).toStringAsFixed(1)} km';
+
+// ── LANG PILL CON SOPORTE FR PARA PARIS ──────────────────────
+// Para Berlín: ES / EN / DE / IT
+// Para París:  ES / EN / FR
+Widget _cityLangPill(String current, String ciudad, void Function(String) onSelect) {
+  final langs = ciudad == 'París' ? ['es', 'en', 'fr']
+      : ciudad == 'Roma' ? ['es']
+      : ['es', 'en', 'de', 'it'];
+  return Container(
+    padding: const EdgeInsets.all(3),
+    decoration: BoxDecoration(
+        color: kSurface2,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: kBorder)),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: langs.map((l) {
+        final active = current == l;
+        return GestureDetector(
+          onTap: () => onSelect(l),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+                color: active ? kGold : Colors.transparent,
+                borderRadius: BorderRadius.circular(16)),
+            child: Text(l.toUpperCase(),
+                style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: active ? Colors.black : kMuted)),
+          ),
+        );
+      }).toList(),
+    ),
+  );
+}
+
+// ── SUBTITLE DINÁMICO POR CIUDAD E IDIOMA ──────────────────────
+String _buildSubtitle(String ciudad, String lang) {
+  const cityNames = {
+    'Berlin': {'es': 'Berlín', 'en': 'Berlin', 'de': 'Berlin', 'it': 'Berlino', 'fr': 'Berlin'},
+    'París':  {'es': 'París',  'en': 'Paris',  'de': 'Paris',  'it': 'Parigi',  'fr': 'Paris'},
+    'Roma':   {'es': 'Roma',   'en': 'Rome',   'de': 'Rom',    'it': 'Roma',    'fr': 'Rome'},
+  };
+  const byTheme = {
+    'es': 'por temas, a pie.',
+    'en': 'by theme, on foot.',
+    'de': 'nach Themen, zu Fuß.',
+    'it': 'per temi, a piedi.',
+    'fr': 'par thèmes, à pied.',
+  };
+  final cityName = cityNames[ciudad]?[lang] ?? ciudad;
+  final by = byTheme[lang] ?? byTheme['es']!;
+  return '$cityName $by';
+}
+
+// ── END_SUB DINÁMICO POR CIUDAD E IDIOMA ──────────────────────
+String _buildEndSub(String ciudad, String lang) {
+  const cityNames = {
+    'Berlin': {'es': 'Berlín', 'en': 'Berlin', 'de': 'Berlin', 'it': 'Berlino', 'fr': 'Berlin'},
+    'París':  {'es': 'París',  'en': 'Paris',  'de': 'Paris',  'it': 'Parigi',  'fr': 'Paris'},
+    'Roma':   {'es': 'Roma',   'en': 'Rome',   'de': 'Rom',    'it': 'Roma',    'fr': 'Rome'},
+  };
+  const thanks = {
+    'es': 'Gracias por explorar',
+    'en': 'Thank you for exploring',
+    'de': 'Danke, dass du erkundet hast',
+    'it': 'Grazie per aver esplorato',
+    'fr': 'Merci d\'avoir exploré',
+  };
+  final cityName = cityNames[ciudad]?[lang] ?? ciudad;
+  final thanksStr = thanks[lang] ?? thanks['es']!;
+  return '$thanksStr $cityName.';
+}
+
 // ── TOURS LIST SCREEN ─────────────────────────────────────────
 class ToursScreen extends StatefulWidget {
   final String lang;
-  const ToursScreen({super.key, required this.lang});
+  final String? initialCity;
+  const ToursScreen({super.key, required this.lang, this.initialCity});
 
   @override
   State<ToursScreen> createState() => _ToursScreenState();
@@ -351,30 +494,225 @@ class ToursScreen extends StatefulWidget {
 
 class _ToursScreenState extends State<ToursScreen> {
   late String _lang;
+  late String _ciudad;
   List<Tour> _tours = [];
   bool _loading = true;
   String? _error;
+
+  bool _showMap = false;
+  Position? _userPos;
+  StreamSubscription<Position>? _geoSub;
+  Tour? _selectedTour;
 
   @override
   void initState() {
     super.initState();
     _lang = widget.lang;
+    _ciudad = widget.initialCity ?? 'Berlin';
+    if (_ciudad == 'París' && (_lang == 'de' || _lang == 'it')) _lang = 'es';
+    if (_ciudad == 'Berlin' && _lang == 'fr') _lang = 'es';
     _load();
+    _startGps();
+  }
+
+  @override
+  void dispose() {
+    _geoSub?.cancel();
+    super.dispose();
   }
 
   Future<void> _load() async {
     try {
-      final tours = await fetchTours('Berlin');
+      final tours = await fetchTours(_ciudad);
       setState(() { _tours = tours; _loading = false; });
     } catch (e) {
       setState(() { _error = e.toString(); _loading = false; });
     }
   }
 
+  Future<void> _startGps() async {
+    try {
+      var perm = await Geolocator.checkPermission();
+      if (perm == LocationPermission.denied) {
+        perm = await Geolocator.requestPermission();
+      }
+      if (perm == LocationPermission.deniedForever) return;
+      _geoSub = Geolocator.getPositionStream(
+        locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.high, distanceFilter: 10),
+      ).listen((pos) { if (mounted) setState(() => _userPos = pos); });
+    } catch (_) {}
+  }
+
+  List<Tour> get _sortedTours {
+    if (_userPos == null || _tours.isEmpty) return _tours;
+    final copy = List<Tour>.from(_tours);
+    copy.sort((a, b) {
+      if (a.contentStops.isEmpty) return 1;
+      if (b.contentStops.isEmpty) return -1;
+      final da = _haversine(_userPos!.latitude, _userPos!.longitude,
+          a.contentStops.first.lat, a.contentStops.first.lng);
+      final db = _haversine(_userPos!.latitude, _userPos!.longitude,
+          b.contentStops.first.lat, b.contentStops.first.lng);
+      return da.compareTo(db);
+    });
+    return copy;
+  }
+
+  double? _distanceTo(Tour tour) {
+    if (_userPos == null || tour.contentStops.isEmpty) return null;
+    return _haversine(_userPos!.latitude, _userPos!.longitude,
+        tour.contentStops.first.lat, tour.contentStops.first.lng);
+  }
+
+  Widget _buildTourPopup(Tour tour) {
+    final c = tourColor(tour.tipo);
+    final dist = _distanceTo(tour);
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+          color: kSurface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: c)),
+      child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(children: [
+          Text(tourEmoji(tour.tipo), style: const TextStyle(fontSize: 20)),
+          const SizedBox(width: 10),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(tour.nombreTraducido(_lang),
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: kText)),
+            if (dist != null)
+              Text('📍 ${_fmtDist(dist)}', style: TextStyle(fontSize: 12, color: c)),
+          ])),
+          GestureDetector(
+            onTap: () => setState(() => _selectedTour = null),
+            child: Container(
+                width: 28, height: 28,
+                decoration: BoxDecoration(color: kSurface2,
+                    borderRadius: BorderRadius.circular(8), border: Border.all(color: kBorder)),
+                child: const Icon(Icons.close, color: kMuted, size: 14)),
+          ),
+        ]),
+        const SizedBox(height: 12),
+        GestureDetector(
+          onTap: () {
+            setState(() => _selectedTour = null);
+            Navigator.push(context, MaterialPageRoute(
+                builder: (_) => TourPlayerScreen(tour: tour, lang: _lang, ciudad: _ciudad)));
+          },
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(color: c, borderRadius: BorderRadius.circular(10)),
+            child: Center(child: Text(tt(_lang, 'start'),
+                style: const TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.w600))),
+          ),
+        ),
+      ]),
+    );
+  }
+
+  Widget _buildMapView(List<Tour> tours) {
+    final valid = tours.where((t) => t.contentStops.isNotEmpty).toList();
+    if (valid.isEmpty) return const Center(child: CircularProgressIndicator(color: kGold));
+
+    double minLat = 90, maxLat = -90, minLng = 180, maxLng = -180;
+    for (final t in valid) {
+      final s = t.contentStops.first;
+      minLat = math.min(minLat, s.lat); maxLat = math.max(maxLat, s.lat);
+      minLng = math.min(minLng, s.lng); maxLng = math.max(maxLng, s.lng);
+    }
+    if (_userPos != null) {
+      minLat = math.min(minLat, _userPos!.latitude);
+      maxLat = math.max(maxLat, _userPos!.latitude);
+      minLng = math.min(minLng, _userPos!.longitude);
+      maxLng = math.max(maxLng, _userPos!.longitude);
+    }
+
+    return Stack(children: [
+      FlutterMap(
+        options: MapOptions(
+          initialCameraFit: CameraFit.bounds(
+            bounds: LatLngBounds(LatLng(minLat, minLng), LatLng(maxLat, maxLng)),
+            padding: const EdgeInsets.all(60),
+          ),
+          onTap: (_, __) => setState(() => _selectedTour = null),
+        ),
+        children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'com.citylore.app',
+          ),
+          MarkerLayer(markers: [
+            ...valid.map((t) {
+              final s = t.contentStops.first;
+              final isSelected = _selectedTour?.id == t.id;
+              final c = tourColor(t.tipo);
+              return Marker(
+                point: LatLng(s.lat, s.lng),
+                width: isSelected ? 52 : 40,
+                height: isSelected ? 52 : 40,
+                child: GestureDetector(
+                  onTap: () => setState(() => _selectedTour = isSelected ? null : t),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    decoration: BoxDecoration(
+                      color: isSelected ? c : kSurface,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: c, width: isSelected ? 2.5 : 1.5),
+                    ),
+                    child: Center(child: Text(tourEmoji(t.tipo),
+                        style: TextStyle(fontSize: isSelected ? 18 : 14))),
+                  ),
+                ),
+              );
+            }),
+            if (_userPos != null)
+              Marker(
+                point: LatLng(_userPos!.latitude, _userPos!.longitude),
+                width: 20, height: 20,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.blue, shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 2)),
+                ),
+              ),
+          ]),
+        ],
+      ),
+      if (_selectedTour != null)
+        Positioned(
+            bottom: 24, left: 16, right: 16,
+            child: _buildTourPopup(_selectedTour!)),
+    ]);
+  }
+
+  void _setCity(String ciudad) {
+    setState(() {
+      _ciudad = ciudad;
+      if (ciudad == 'París' && (_lang == 'de' || _lang == 'it')) _lang = 'es';
+      if (ciudad == 'Berlin' && _lang == 'fr') _lang = 'es';
+      if (ciudad == 'Roma') _lang = 'es';
+      _loading = true;
+      _error = null;
+      _tours = [];
+      _showMap = false;
+      _selectedTour = null;
+    });
+    _load();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBg,
+      floatingActionButton: _tours.isEmpty ? null : FloatingActionButton.extended(
+        onPressed: () => setState(() { _showMap = !_showMap; _selectedTour = null; }),
+        backgroundColor: kGold,
+        icon: Icon(_showMap ? Icons.list : Icons.map_outlined, color: Colors.black),
+        label: Text(_showMap ? tt(_lang, 'see_list') : tt(_lang, 'see_map'),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600)),
+      ),
       body: SafeArea(child: Column(children: [
         // ── TOP BAR ──
         Container(
@@ -395,10 +733,37 @@ class _ToursScreenState extends State<ToursScreen> {
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(tt(_lang, 'title'),
                   style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: kText)),
-              Text(tt(_lang, 'subtitle'),
+              Text(_buildSubtitle(_ciudad, _lang),
                   style: const TextStyle(fontSize: 11, color: kMuted)),
             ])),
-            langPill(_lang, (l) => setState(() => _lang = l)),
+            _cityLangPill(_lang, _ciudad, (l) => setState(() => _lang = l)),
+          ]),
+        ),
+
+        // ── SELECTOR DE CIUDAD (solo desde pantalla principal) ──
+        if (widget.initialCity == null)
+        Container(
+          color: kSurface,
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+          child: Row(children: [
+            _CityToggleBtn(
+              label: '🇩🇪 Berlín',
+              active: _ciudad == 'Berlin',
+              onTap: () => _setCity('Berlin'),
+              rightMargin: 8,
+            ),
+            _CityToggleBtn(
+              label: '🇫🇷 París',
+              active: _ciudad == 'París',
+              onTap: () => _setCity('París'),
+              rightMargin: 8,
+            ),
+            _CityToggleBtn(
+              label: '🇮🇹 Roma',
+              active: _ciudad == 'Roma',
+              onTap: () => _setCity('Roma'),
+              rightMargin: 0,
+            ),
           ]),
         ),
 
@@ -432,15 +797,65 @@ class _ToursScreenState extends State<ToursScreen> {
                       textAlign: TextAlign.center),
                 ]),
               ))
-            : ListView.builder(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-          itemCount: _tours.length,
-          itemBuilder: (ctx, i) => _TourCard(
-            tour: _tours[i],
-            lang: _lang,
-          ),
-        )),
+            : Builder(builder: (_) {
+                final sorted = _sortedTours;
+                if (_showMap) return _buildMapView(sorted);
+                return ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+                  itemCount: sorted.length,
+                  itemBuilder: (ctx, i) => _TourCard(
+                    tour: sorted[i],
+                    lang: _lang,
+                    ciudad: _ciudad,
+                    distanceM: _distanceTo(sorted[i]),
+                    isNearest: _userPos != null && i == 0 && sorted.length > 1,
+                  ),
+                );
+              })),
       ])),
+    );
+  }
+}
+
+// ── CITY TOGGLE BUTTON ────────────────────────────────────────
+class _CityToggleBtn extends StatelessWidget {
+  final String label;
+  final bool active;
+  final VoidCallback onTap;
+  final double rightMargin;
+  const _CityToggleBtn({
+    required this.label,
+    required this.active,
+    required this.onTap,
+    required this.rightMargin,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          margin: EdgeInsets.only(right: rightMargin),
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            color: active ? kGold.withOpacity(0.12) : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: active ? kGold : kBorder),
+          ),
+          child: Center(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: active ? kGoldLight : kMuted,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -449,7 +864,16 @@ class _ToursScreenState extends State<ToursScreen> {
 class _TourCard extends StatefulWidget {
   final Tour tour;
   final String lang;
-  const _TourCard({required this.tour, required this.lang});
+  final String ciudad;
+  final double? distanceM;
+  final bool isNearest;
+  const _TourCard({
+    required this.tour,
+    required this.lang,
+    required this.ciudad,
+    this.distanceM,
+    this.isNearest = false,
+  });
 
   @override
   State<_TourCard> createState() => _TourCardState();
@@ -467,7 +891,7 @@ class _TourCardState extends State<_TourCard> {
 
     return GestureDetector(
       onTap: () => Navigator.push(context, MaterialPageRoute(
-          builder: (_) => TourPlayerScreen(tour: t, lang: widget.lang))),
+          builder: (_) => TourPlayerScreen(tour: t, lang: widget.lang, ciudad: widget.ciudad))),
       onTapDown: (_) => setState(() => _pressed = true),
       onTapUp: (_) => setState(() => _pressed = false),
       onTapCancel: () => setState(() => _pressed = false),
@@ -477,7 +901,9 @@ class _TourCardState extends State<_TourCard> {
         decoration: BoxDecoration(
           color: _pressed ? kSurface2 : kSurface,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: _pressed ? c : kBorder),
+          border: Border.all(
+              color: _pressed ? c : (widget.isNearest ? kGold : kBorder),
+              width: widget.isNearest ? 1.5 : 1.0),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
@@ -495,12 +921,26 @@ class _TourCardState extends State<_TourCard> {
               ),
               const SizedBox(width: 12),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                // ← Nombre traducido al idioma activo
-                Text(t.nombreTraducido(widget.lang),
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w600, color: kText)),
+                Row(children: [
+                  Expanded(child: Text(t.nombreTraducido(widget.lang),
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w600, color: kText))),
+                  if (widget.isNearest)
+                    Container(
+                      margin: const EdgeInsets.only(left: 6),
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: kGold.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: kGold.withOpacity(0.5)),
+                      ),
+                      child: Text('⭐ ${tt(widget.lang, 'nearest')}',
+                          style: const TextStyle(
+                              fontSize: 9, color: kGold, fontWeight: FontWeight.w600)),
+                    ),
+                ]),
                 const SizedBox(height: 5),
-                Wrap(spacing: 6, children: [
+                Wrap(spacing: 6, runSpacing: 4, children: [
                   _MetaPill(
                     icon: Icons.place_outlined,
                     label: '${t.numParadas} ${tt(widget.lang, 'stops')}',
@@ -516,6 +956,12 @@ class _TourCardState extends State<_TourCard> {
                     label: '${t.distanciaKm} ${tt(widget.lang, 'km')}',
                     color: c,
                   ),
+                  if (widget.distanceM != null)
+                    _MetaPill(
+                      icon: Icons.my_location,
+                      label: _fmtDist(widget.distanceM!),
+                      color: widget.isNearest ? kGold : c,
+                    ),
                 ]),
               ])),
               Icon(Icons.chevron_right, color: c, size: 20),
@@ -577,7 +1023,8 @@ class _MetaPill extends StatelessWidget {
 class TourPlayerScreen extends StatefulWidget {
   final Tour tour;
   final String lang;
-  const TourPlayerScreen({super.key, required this.tour, required this.lang});
+  final String ciudad;
+  const TourPlayerScreen({super.key, required this.tour, required this.lang, required this.ciudad});
 
   @override
   State<TourPlayerScreen> createState() => _TourPlayerScreenState();
@@ -859,7 +1306,7 @@ class _TourPlayerScreenState extends State<TourPlayerScreen> {
               ),
             ),
             const SizedBox(width: 8),
-            langPill(_lang, (l) {
+            _cityLangPill(_lang, widget.ciudad, (l) {
               setState(() => _lang = l);
               _loadAudio();
             }),
@@ -1068,7 +1515,7 @@ class _TourPlayerScreenState extends State<TourPlayerScreen> {
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold, color: c)),
                     const SizedBox(height: 4),
-                    Text(tt(_lang, 'end_sub'),
+                    Text(_buildEndSub(widget.ciudad, _lang),
                         style: const TextStyle(fontSize: 13, color: kMuted)),
                     const SizedBox(height: 16),
                     GestureDetector(
