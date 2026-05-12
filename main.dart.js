@@ -8194,7 +8194,7 @@ h=A.y(i,t.GU)
 for(g=J.bj(j.a(J.cr(J.cr(B.cf.ea(B.d.T(m,l,k+1)),"table"),"rows"))),f=t.OQ;g.u();){e=j.a(J.cr(g.gJ(),"c"))
 o=new A.awY(e)
 if(J.fY(e)||J.bE(o.$1(0))===0)continue
-if(!J.d(o.$1(1),a5))continue
+if(o.$1(1).toLowerCase()!==a5.toLowerCase())continue
 d=o.$1(3)
 n=o.$1(2)
 if(!h.ao(n)){h.m(0,n,A.ab(["nombre",o.$1(2),"tipo",d],i,i))
